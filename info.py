@@ -2,7 +2,7 @@ import os
 import openai
 from temp import get_email_sequence_from_user
 from formatter import StringFormatter
-from get_values import open_info_json, open_info_json_target_demographic
+from get_values import open_info_json, open_info_json_target_demographic, get_hooks_examples_from_file
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -100,30 +100,30 @@ class EmailSequenceInformation:
         print("Sequence Purpose:", self.sequence_purpose)
 
 
-def generate_prompt(company_info, customer_info, email_sequence_info, instructions):
+def generate_prompt(company_info, customer_info, email_sequence_info, start_sequence, restart_sequence, instructions):
     prompt=f"""
-    Company Information
-    Name: {company_info.name}
-    Company Name: {company_info.company_name}
-    Product Name: {company_info.product_name}
-    Product Description: {company_info.product_description}
-    
-    Customer Information
-    Desires: {customer_info.desires}
-    Target Audience: {customer_info.target_audience}
-    Pains: {customer_info.pains}
-    Target Demographic: {customer_info.target_demographic}
-    
-    Email Sequence Information
-    Number of Emails: {email_sequence_info.number_of_emails}
-    Type of Email Sequence: {email_sequence_info.type_of_email_sequence}
-    Sequence Purpose: {email_sequence_info.sequence_purpose}
-    
-    Instructions
-    {instructions}\n
-    
+Company Information
+Name: {company_info.name}
+Company Name: {company_info.company_name}
+Product Name: {company_info.product_name}
+Product Description: {company_info.product_description}
+
+Customer Information
+Desires: {customer_info.desires}
+Target Audience: {customer_info.target_audience}
+Pains: {customer_info.pains}
+Target Demographic: {customer_info.target_demographic}
+
+Email Sequence Information
+Number of Emails: {email_sequence_info.number_of_emails}
+Type of Email Sequence: {email_sequence_info.type_of_email_sequence}
+Sequence Purpose: {email_sequence_info.sequence_purpose}
+
+{instructions}
     """
     print(prompt)
+    start_sequence = start_sequence
+    restart_sequence = restart_sequence
     response = openai.Completion.create(
         model="text-davinci-003",
         prompt=prompt,
@@ -162,17 +162,63 @@ def main():
         company_info=company_info,
         customer_info=customer_info,
         email_sequence_info=email_sequence_info,
+        start_sequence = "\n\nPrompt\n",
+        restart_sequence = "\n",
         instructions="Using the information above, generate a prompt that will be used downstream for another AI to complete the task of creating an email sequence.",
     )
-    print(prompt)
+    # strip newlines
+    prompt = prompt.replace("\n", " ")
+    print(f'#{prompt}#')
     prompt = generate_prompt(
         company_info=company_info,
         customer_info=customer_info,
         email_sequence_info=email_sequence_info,
-        instructions=f'{prompt}The subject lines, value propositions, and calls to action for each email are as follows:',
+        start_sequence = None,
+        restart_sequence = None,
+        instructions=f'{prompt}',
     )
     print(prompt)
+    hooks = get_hooks_examples_from_file()
+    def create_new_hooks(hooks):
+        prompt = f"""
+Example Hooks for a course that teaches you how to tune your car
+{hooks}
 
+Company Information
+Name: {company_info.name}
+Company Name: {company_info.company_name}
+Product Name: {company_info.product_name}
+Product Description: {company_info.product_description}
+
+Background Information
+Desires: {customer_info.desires}
+Target Audience: {customer_info.target_audience}
+Pains: {customer_info.pains}
+Target Demographic: {customer_info.target_demographic}
+
+Hook Information
+Number of Hooks: {email_sequence_info.number_of_emails}
+Type of Hook: {email_sequence_info.type_of_email_sequence}
+Desired Outcome: {email_sequence_info.sequence_purpose}
+
+
+Write a 12-15 word hook that will be used to get your target audience to do the desired outcome
+"""
+        print(prompt)
+        response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=prompt,
+        max_tokens=500,
+        temperature=0.7,
+        top_p=0,
+        n=1,
+        )
+        return response["choices"][0]["text"]
+    print(create_new_hooks(hooks))
+
+# if __name__ == "__main__":
+#     main()
 
 if __name__ == "__main__":
     main()
+

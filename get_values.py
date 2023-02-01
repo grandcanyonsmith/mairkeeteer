@@ -18,3 +18,14 @@ def open_info_json_target_demographic():
         pains = data["target_audience"]["pains"]
         target_demographic = data["target_audience"]["target_demographic"]
         return desires, target_audience, pains, target_demographic
+
+def get_hooks_examples_from_file():
+    questions = []
+
+    with open("hook_examples.jsonl", "r") as f:
+        for line in f:
+            data = json.loads(line)
+            questions.append(data["hook"])
+
+    return "\n".join(questions)
+
