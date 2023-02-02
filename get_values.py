@@ -1,20 +1,26 @@
 import json
 
 
-def open_info_json():
-    with open("info.jsonl") as json_file:
-        data = json.load(json_file)
-        name = data["company_info"]["name"]
-        company_name = data["company_info"]["company_name"]
-        product_name = data["company_info"]["product_name"]
-        product_description = data["company_info"]["product_description"]
-        return name, company_name, product_name, product_description
-    
-def open_info_json_target_demographic():
-    with open("info.jsonl") as json_file:
-        data = json.load(json_file)
-        desires = data["target_audience"]["desires"]
-        target_audience = data["target_audience"]["target_audience"]
-        pains = data["target_audience"]["pains"]
-        target_demographic = data["target_audience"]["target_demographic"]
-        return desires, target_audience, pains, target_demographic
+def get_background_information(info_name):
+    """
+    Open the background information file and return the info_name
+    :return: a list
+    """
+    return list(_get_data_from_file("examples/background_information.jsonl")[info_name].values())
+
+
+def get_hooks_examples_from_file():
+    """
+    Open the hook examples file and return the hooks
+    :return: a string of hooks
+    """
+    return "\n".join(json.loads(line)["hook"] for line in open("examples/hook_examples.jsonl", "r"))
+
+
+def _get_data_from_file(file_name):
+    """
+    Open a file and return the data
+    :param file_name: the name of the file
+    :return: the data of the file
+    """
+    return json.load(open(file_name))

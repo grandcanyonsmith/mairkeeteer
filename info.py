@@ -1,177 +1,85 @@
+#!/usr/bin/env python3
+
 import os
 import openai
-from temp import get_email_sequence_from_user
-from formatter import StringFormatter
-from get_values import open_info_json, open_info_json_target_demographic
+
+from information.company_information import CompanyInformation
+from information.customer_information import CustomerInformation
+from information.email_sequence_information import EmailSequenceInformation
+
+from email_components.hooks import Hooks
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
-class CompanyInformation:
-    def __init__(self, name, company_name, product_name, product_description):
-        self.name = name
-        self.company_name = company_name
-        self.product_name = product_name
-        self.product_description = product_description
-        
-    
-    def get_name(self):
-        if open_info_json()[0] != "":
-            return open_info_json()[0]
-        return input("What is your name? ")
-
-    def get_company_name(self):
-        if open_info_json()[1] != "":
-            return open_info_json()[1]
-        return input("What is the name of your company? ")
-
-    def get_product_name(self):
-        if open_info_json()[2] != "":
-            return open_info_json()[2]
-        return input("What is the name of your product? ")
-
-    def get_product_description(self):
-        if open_info_json()[3] != "":
-            return open_info_json()[3]
-        return input("What is the description of your product? ")
-
-    def display_information(self):
-        print("Name:", self.name)
-        print("Company Name:", self.company_name)
-        print("Product Name:", self.product_name)
-        print("Product Description:", self.product_description)
-
-
-class CustomerInformation:
-    def __init__(self, desires, target_audience, pains, target_demographic):
-        self.desires = desires
-        self.target_audience = target_audience
-        self.pains = pains
-        self.target_demographic = target_demographic
-
-    def get_desires(self):
-        if open_info_json_target_demographic()[0] != "":
-            return open_info_json_target_demographic()[0]
-        return input("What are the desires of your target audience? ")
-
-    def get_target_audience(self):
-        if open_info_json_target_demographic()[1] != "":
-            return open_info_json_target_demographic()[1]
-        return input("What is the target audience of your product? ")
-
-    def get_pains(self):
-        if open_info_json_target_demographic()[2] != "":
-            return open_info_json_target_demographic()[2]
-        return input("What are the pains of your target audience? ")
-    
-    def get_target_demographic(self):
-        if open_info_json_target_demographic()[3] != "":
-            return open_info_json_target_demographic()[3]
-        return input("What is the target demographic of your target audience? ")
-    
-
-    def display_information(self):
-        print("Desires:", self.desires)
-        print("Target Audience:", self.target_audience)
-        print("Pains:", self.pains)
-        print("Target Demographic:", self.target_demographic)
-
-
-class EmailSequenceInformation:
-    def __init__(self):
-        self.number_of_emails = self.get_number_of_emails()
-        self.type_of_email_sequence, self.sequence_purpose = self.get_sequence_type_and_purpose()
-
-    def get_number_of_emails(self):
-        return input("How many emails will be in your sequence? ")
-
-    def get_sequence_type_and_purpose(self):
-        list_of_user_email_info = get_email_sequence_from_user()
-        formatter = StringFormatter()
-        type_of_email_sequence, sequence_purpose = formatter.format_everything(
-            list_of_user_email_info
-        )
-        print(type_of_email_sequence, sequence_purpose)
-        return type_of_email_sequence, sequence_purpose
-
-    def display_information(self):
-        print("Number of Emails:", self.number_of_emails)
-        print("Type of Email Sequence:", self.type_of_email_sequence)
-        print("Sequence Purpose:", self.sequence_purpose)
-
-
-def generate_prompt(company_info, customer_info, email_sequence_info, instructions):
-    prompt=f"""
+def format_background_info_prompt(company_info, customer_info, email_sequence_info, email_prompt):
+    prompt = f"""
     Company Information
     Name: {company_info.name}
     Company Name: {company_info.company_name}
     Product Name: {company_info.product_name}
     Product Description: {company_info.product_description}
-    
+
     Customer Information
     Desires: {customer_info.desires}
     Target Audience: {customer_info.target_audience}
     Pains: {customer_info.pains}
     Target Demographic: {customer_info.target_demographic}
-    
+
     Email Sequence Information
     Number of Emails: {email_sequence_info.number_of_emails}
     Type of Email Sequence: {email_sequence_info.type_of_email_sequence}
     Sequence Purpose: {email_sequence_info.sequence_purpose}
-    
-    Instructions
-    {instructions}\n
-    
+    {email_prompt}
     """
-    print(prompt)
+    return prompt
+
+
+def generate_response(email_prompt):
     response = openai.Completion.create(
         model="text-davinci-003",
-        prompt=prompt,
-        max_tokens=500,
+        prompt=email_prompt,
+        max_tokens=1000,
         temperature=0.7,
         top_p=0,
         n=1,
     )
     return response["choices"][0]["text"]
 
+def generate_email(company_info, customer_info, email_sequence_info, email_prompt):
+    email_prompt = format_background_info_prompt(company_info, customer_info, email_sequence_info, email_prompt)
+    return generate_response(email_prompt) 
+
+def create_prompt_for_openai_to_generate_email_sequence(company_info, customer_info, email_sequence_info):
+    prompt = "Using the information above, generate a prompt that will be used downstream for another AI to complete the task of creating an email sequence."
+    email_prompt = generate_email(company_info, customer_info, email_sequence_info, prompt)
+    return email_prompt.replace("\n", " ")  # strip newlines
+
+def create_an_email_sequence(company_info, customer_info, email_sequence_info, prompt):
+    return generate_email(company_info, customer_info, email_sequence_info, prompt)
+
+def intialize_background_info():
+    company_info = CompanyInformation()
+    customer_info = CustomerInformation()
+    email_sequence_info = EmailSequenceInformation()
+    return company_info, customer_info, email_sequence_info
+
+
+def create_hooks(company_info, customer_info, email_sequence_info):
+    hooks = Hooks()
+    return hooks.create_new_hooks(
+        company_info, customer_info, email_sequence_info
+    )
+
 
 def main():
-    instructions = """
-    Please write a brief email sequence that will be sent to your target audience. 
-    The sequence should be based on the information provided above.
-    """
+    company_info, customer_info, email_sequence_info = intialize_background_info()
+    print(create_hooks(company_info, customer_info, email_sequence_info))
+    # prompt = create_prompt_for_openai_to_generate_email_sequence(company_info, customer_info, email_sequence_info)
+    # print(prompt)
+    # email_sequence = create_an_email_sequence(company_info, customer_info, email_sequence_info, prompt)
+    # print(email_sequence)
 
-    company_info = CompanyInformation(
-        CompanyInformation.get_name(CompanyInformation),
-        CompanyInformation.get_company_name(CompanyInformation),
-        CompanyInformation.get_product_name(CompanyInformation),
-        CompanyInformation.get_product_description(CompanyInformation),
-    )
-    company_info.display_information()
-
-    customer_info = CustomerInformation(
-        CustomerInformation.get_desires(CustomerInformation),
-        CustomerInformation.get_target_audience(CustomerInformation),
-        CustomerInformation.get_pains(CustomerInformation),
-        CustomerInformation.get_target_demographic(CustomerInformation),
-    )
-
-    email_sequence_info = EmailSequenceInformation()
-
-    prompt = generate_prompt(
-        company_info=company_info,
-        customer_info=customer_info,
-        email_sequence_info=email_sequence_info,
-        instructions="Using the information above, generate a prompt that will be used downstream for another AI to complete the task of creating an email sequence.",
-    )
-    print(prompt)
-    prompt = generate_prompt(
-        company_info=company_info,
-        customer_info=customer_info,
-        email_sequence_info=email_sequence_info,
-        instructions=f'{prompt}The subject lines, value propositions, and calls to action for each email are as follows:',
-    )
-    print(prompt)
 
 
 if __name__ == "__main__":
