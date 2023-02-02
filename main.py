@@ -200,7 +200,7 @@
 
 
 import logging
-from openai_secret_manager import OpenAiSecretManager as openai_secret_manager
+from utils.openai_secret_manager import OpenAiSecretManager as openai_secret_manager
 from formatter import StringFormatter
 import openai  # Module for interacting with OpenAI's APIs
 
