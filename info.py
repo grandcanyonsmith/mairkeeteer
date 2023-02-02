@@ -3,11 +3,11 @@
 import os
 import openai
 
-from information.company_information import CompanyInformation
-from information.customer_information import CustomerInformation
-from information.email_sequence_information import EmailSequenceInformation
+from scripts.information.company_information import CompanyInformation
+from scripts.information.customer_information import CustomerInformation
+from scripts.information.email_sequence_information import EmailSequenceInformation
 
-from email_components.hooks import Hooks
+from scripts.email_components.hooks import Hooks
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 

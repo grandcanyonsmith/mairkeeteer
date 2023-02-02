@@ -1,9 +1,11 @@
+import json
+#!/usr/bin/env python3
 # import os
 # import json
 # import logging
 # from typing import List
 # from openai_secret_manager import OpenAiSecretManager as openai_secret_manager
-# from formatter import StringFormatter
+# from utils.formatter import StringFormatter
 
 # import openai  # Module for interacting with OpenAI's APIs
 
@@ -193,16 +195,18 @@
 
 # if __name__ == "__main__":
 #     formatter = StringFormatter()
-    
+
 #     email_sequence = EmailSequence()
 #     print(email_sequence)
 
 
-
 import logging
-from utils.openai_secret_manager import OpenAiSecretManager as openai_secret_manager
-from formatter import StringFormatter
+
 import openai  # Module for interacting with OpenAI's APIs
+
+from scripts.utils.formatter import StringFormatter
+from scripts.utils.openai_secret_manager import \
+    OpenAiSecretManager as openai_secret_manager
 
 
 class EmailSequence:
@@ -283,9 +287,7 @@ class EmailSequence:
             for subject_line in subject_lines_text.split("\n")
             if subject_line != ""
         ]
-        return formatter.format_everything(
-            self.subject_lines
-        )
+        return formatter.format_everything(self.subject_lines)
 
     def create_value_propositions(self):
         prompt = f'''Background information:\n"""\n{' '.join(self.background_information)}\n"""\n\nDesired Outcome:\n"""\n{' '.join(self.desired_outcome)}\n"""\n\nNumber of emails in the email sequence:\n"""\n{self.number_of_emails}\n"""\n\nValue propositions for email sequence:\n"""\n'''  # noqa
@@ -393,20 +395,119 @@ if __name__ == "__main__":
     email_sequence = EmailSequence()
 
     # Create the steps
-    email_sequence.create_steps()
+    steps = email_sequence.create_steps()
+    for step in steps:
+        print("Step:", step, end="\n\n")
 
     # Create the subject lines
-    email_sequence.create_subject_lines()
+    subject_lines = email_sequence.create_subject_lines()
+    for subject_line in subject_lines:
+        print("Subject Line:", subject_line, end="\n\n")
 
     # Create the value propositions
-    email_sequence.create_value_propositions()
+    value_propositions = email_sequence.create_value_propositions()
+    for value_proposition in value_propositions:
+        print("Value Proposition:", value_proposition, end="\n\n")
+        
     # Create the CTAs
-    email_sequence.create_ctas()
+    ctas = email_sequence.create_ctas()
+    for cta in ctas:
+        print("CTA:", cta, end="\n\n")
 
     # Create the email sequence
-    email_sequence.create_email_sequence()
+    email_sequences = email_sequence.create_email_sequence()
+    for email in email_sequences:
+        print("Email:", email, end="\n\n")
 
-    # Print the email sequence
-    print(email_sequence)
 
-            
+# class DataLoader:
+#     def __init__(self, file_path):
+#         self.file_path = file_path
+
+#     def load_data(self):
+#         with open(self.file_path, 'r') as file:
+#             data = json.load(file)
+#         return data
+
+# class DataPreprocessor:
+#     def __init__(self, data):
+#         self.data = data
+
+#     def preprocess_data(self):
+#         data = self.data.copy()
+#         # preprocessing steps
+#         return data
+
+# class EmailStepCreator:
+#     def __init__(self, data):
+#         self.data = data
+
+#     def create_email_step(self, step_num):
+#         email_step = self.data.get(f'step_{step_num}')
+#         return email_step
+
+# class SubjectLineCreator:
+#     def __init__(self, data):
+#         self.data = data
+
+#     def create_subject_line(self):
+#         subject_line = self.data.get('subject_line')
+#         return subject_line
+
+# class ValuePropositionCreator:
+#     def __init__(self, data):
+#         self.data = data
+
+#     def create_value_proposition(self):
+#         value_proposition = self.data.get('value_proposition')
+#         return value_proposition
+
+# class CallToActionCreator:
+#     def __init__(self, data):
+#         self.data = data
+
+#     def create_call_to_action(self):
+#         call_to_action = self.data.get('call_to_action')
+#         return call_to_action
+
+# class EmailSequenceCreator:
+#     def __init__(self, file_path):
+#         self.file_path = file_path
+
+#     def create_email_sequence(self):
+#         data_loader = DataLoader(self.file_path)
+#         data = data_loader.load_data()
+#         data_preprocessor = DataPreprocessor(data)
+#         data = data_preprocessor.preprocess_data()
+
+#         email_sequence = []
+#         print(data)
+#         num_steps = data.get('num_steps')
+#         num_steps = int(num_steps)
+        
+#         for step_num in range(1, num_steps + 1):
+#             email_step_creator = EmailStepCreator(data)
+#             email_step = email_step_creator.create_email_step(step_num)
+
+#             subject_line_creator = SubjectLineCreator(email_step)
+#             subject_line = subject_line_creator.create_subject_line()
+
+#             value_proposition_creator = ValuePropositionCreator(email_step)
+#             value_proposition = value_proposition_creator.create_value_proposition()
+
+#             call_to_action_creator = CallToActionCreator(email_step)
+#             call_to_action = call_to_action_creator.create_call_to_action()
+#             print(call_to_action)
+#             email = {
+#                 'subject_line': subject_line,
+#                 'value_proposition': value_proposition,
+#                 'call_to_action': call_to_action
+#             }
+#             email_sequence.append(email)
+#         return email_sequence
+
+# if __name__ == "__main__":
+#     file_path = 'data.json'
+#     email_sequence_creator = EmailSequenceCreator(file_path)
+#     email_sequence = email_sequence_creator.create_email_sequence()
+#     print(email_sequence)

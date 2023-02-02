@@ -9,7 +9,7 @@ def get_background_information(info_name):
     :return: a list
     """
     return list(
-        _get_data_from_file("examples/background_information.jsonl")[info_name].values()
+        _get_data_from_file("files/data/examples/background_information.jsonl")[info_name].values()
     )  # Get the values of the info_name
 
 
@@ -20,7 +20,7 @@ def get_hooks_examples_from_file():
     :return: a string of hooks
     """
     return "\n".join(
-        json.loads(line)["hook"] for line in open("examples/hook_examples.jsonl", "r")
+        json.loads(line)["hook"] for line in open("files/data/examples/hook_examples.jsonl", "r")
     )  # Get the hook of each line
 
 

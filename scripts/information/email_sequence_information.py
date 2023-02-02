@@ -1,8 +1,8 @@
 import sys
-sys.path.append("..") # Adds higher directory to python modules path.
+sys.path.append("../..")  # Adds higher directory to python modules path.
 
-from email_components.select_email_sequence_type import get_email_sequence_from_user
-from formatter import StringFormatter
+from scripts.email_components.select_email_sequence_type import get_email_sequence_from_user
+from scripts.utils.formatter import StringFormatter
 
 class EmailSequenceInformation:
     def __init__(self):

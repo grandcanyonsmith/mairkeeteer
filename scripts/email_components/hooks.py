@@ -1,8 +1,8 @@
 import sys
 
-sys.path.append("..")  # Adds higher directory to python modules path.
+sys.path.append("../..")  # Adds higher directory to python modules path.
 
-from get_values import get_hooks_examples_from_file
+from scripts.utils.get_values import get_hooks_examples_from_file
 
 import openai
 

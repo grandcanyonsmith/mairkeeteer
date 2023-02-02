@@ -1,7 +1,7 @@
 import sys
 
-sys.path.append("..")  # Adds higher directory to python modules path.
-from get_values import get_background_information
+sys.path.append("../..")  # Adds higher directory to python modules path.
+from scripts.utils.get_values import get_background_information
 
 
 class CompanyInformation:
