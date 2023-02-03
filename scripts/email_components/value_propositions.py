@@ -1,8 +1,14 @@
+import json
+import sys
+
 import openai
+
+sys.path.append("../..")  # Adds higher directory to python modules path.
 from scripts.utils.formatter import StringFormatter
-from scripts.utils.openai_secret_manager import (
-    OpenAiSecretManager as openai_secret_manager,
-)
+from scripts.utils.get_values import (append_key_value_to_temp_json_file,
+                                      get_key_values_from_temp_json_file)
+from scripts.utils.openai_secret_manager import \
+    OpenAiSecretManager as openai_secret_manager
 
 
 class ValuePropositionsCreator:
@@ -45,14 +51,12 @@ if __name__ == "__main__":
             "I want to send them an email sequence that will get them to buy my course",
         ]
     )
-    steps = [
-        "email 1: introduce course creator pro and explain the benefits of taking the course.",  # noqa: E501
-        "email 2: share success stories from people who have taken the course and achieved their desired outcomes.",  # noqa: E501
-        "email 3: offer a special discount for those who purchase the course within a certain time frame.",  # noqa: E501
-    ]
+    steps = get_key_values_from_temp_json_file("step")
+    value_propositions = []
     for step in steps:
-        value_propositions = value_propositions_creator.create_value_propositions(
+        value_propositions += value_propositions_creator.create_value_propositions(
             background_info, desired_outcome, step, len(steps)
         )
-        for value_proposition in value_propositions:
-            print(value_proposition)
+    print(value_propositions)
+
+    append_key_value_to_temp_json_file("value_proposition", value_propositions)

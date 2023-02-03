@@ -11,3 +11,26 @@
 # self.emails = [ { "step": self.steps[i], "subject_line": self.subject_lines[i], "value_proposition": self.value_propositions[i], "cta": self.ctas[i] } for i in range(len(self.steps)) ]
 
 # this will then be used to create however many emails the user requests
+
+
+
+
+
+# TODO: Create a list of dictionaries that contains the email content for each email
+# HINT: The list of dictionaries should look like this:
+# [
+#     {
+#         "step": "Introduction",
+#         "subject_line": "Introducing Our New Product",
+#         "value_proposition": "Save Time and Increase Efficiency",
+#         "cta": "Sign Up Now"
+#     },
+#     { 
+#         "step": "Features",
+#         "subject_line": "Discover the Features of Our Product",
+#         "value_proposition": "Improve Quality and Reduce Costs",
+#         "cta": "Learn More"
+#     },
+#     {
+#         "step": "Benefits",
+#         "subject_line": "Unlock the Benefits of Our Product",
