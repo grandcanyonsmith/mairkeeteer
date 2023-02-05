@@ -87,7 +87,7 @@ class Hooks:
 
 if __name__ == "__main__":
     # create a function that creates a list of all steps in the temp.jsonl file
-    temp_file = "temp.jsonl"
+    temp_file = "../../files/data/temp/temp.jsonl"
 
     def create_steps_list():
         with open(temp_file, "r") as f:

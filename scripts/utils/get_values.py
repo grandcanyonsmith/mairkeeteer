@@ -1,3 +1,5 @@
+import sys
+sys.path.append("../..")  # Adds higher directory to python modules path.
 import json
 from scripts.utils.openai_secret_manager import (
     OpenAiSecretManager as openai_secret_manager,
@@ -13,7 +15,7 @@ def get_background_information(info_name):
     """
     return list(
         _get_data_from_file(
-            "/Users/canyons/Documents/GitHub/mairkeeteer/files/data/examples/background_information.jsonl"
+            "files/data/examples/background_information.jsonl"
         )[info_name].values()
     )  # Get the values of the info_name
 
@@ -27,7 +29,7 @@ def get_hooks_examples_from_file():
     return "\n".join(
         json.loads(line)["hook"]
         for line in open(
-            "/Users/canyons/Documents/GitHub/mairkeeteer/files/data/examples/hook_examples.jsonl",
+            "files/data/examples/hook_examples.jsonl",
             "r",
         )
     )  # Get the hook of each line
@@ -43,7 +45,7 @@ def _get_data_from_file(file_name):
 
 
 def append_key_value_to_temp_json_file(key, values):
-    temp_file = "/Users/canyons/Documents/GitHub/mairkeeteer/scripts/email_components/temp.jsonl"
+    temp_file = "../../files/data/temp/temp.jsonl"
     with open(temp_file, "r") as f:
         steps = [json.loads(line) for line in f]
     for i, step in enumerate(steps):
@@ -54,7 +56,7 @@ def append_key_value_to_temp_json_file(key, values):
 
 
 def get_key_values_from_temp_json_file(key):
-    temp_file = "/Users/canyons/Documents/GitHub/mairkeeteer/scripts/email_components/temp.jsonl"
+    temp_file = "../../files/data/temp/temp.jsonl"
     with open(temp_file, "r") as f:
         values = [json.loads(line)[key] for line in f]
     return values
