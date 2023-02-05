@@ -1,5 +1,6 @@
 import sys
 import json
+import os
 
 sys.path.append("../..")  # Adds higher directory to python modules path.
 
@@ -51,8 +52,8 @@ class Hooks:
         Target Demographic: {customer_info.target_demographic}
 
 
-        We are going to create a {email_sequence_info.type_of_email_sequence} email {email_sequence_info.sequence_purpose}. There are a total of {email_sequence_info.number_of_emails} emails in this sequence. This is email number {hooks.email_number}.
-        In this email, we are going to {step}. Write a hook that we will use for the subject line of the email. The hook should be written in a way that will get the target audience to do the desired outcome. The desired outcome is {email_sequence_info.sequence_purpose}.
+        We are going to create a {email_sequence_info.type_of_email_sequence} email {email_sequence_info.sequence_purpose}. There are a total of {email_sequence_info.number_of_emails} emails in this sequence. This is email number {self.email_number}.
+        In this email, we are going to {email_sequence_info.sequence_purpose}. Write a hook that we will use for the subject line of the email. The hook should be written in a way that will get the target audience to do the desired outcome. The desired outcome is {email_sequence_info.sequence_purpose}.
         Write a 12-15 word hook that will be used to get your target audience to do the desired outcome:
         """
         print(prompt)
@@ -61,19 +62,33 @@ class Hooks:
     def count_hooks(self):
         return len(self.hooks)
 
+    def main(self):
+        company_info = CompanyInformation()
+        customer_info = CustomerInformation()
+        email_sequence_info = EmailSequenceInformation()
+        for step in steps:
+            self.hooks.append(
+                self.create_new_hooks(company_info, customer_info, email_sequence_info)
+            )
+            self.email_number += 1
+        append_key_value_to_temp_json_file("hook", self.hooks)
 
-if __name__ == "__main__":
-    steps = get_key_values_from_temp_json_file("step")
-    print(steps, f"Total number of steps: {len(steps)}")
-    company_info = CompanyInformation()
-    customer_info = CustomerInformation()
-    email_sequence_info = EmailSequenceInformation()
-    hooks = Hooks()
-    for step in steps:
+# hooks = Hooks()
+# hooks.main()
+    # import os
+    # print(os.getcwd())
+    # steps = get_key_values_from_temp_json_file("step")
+    # print(steps, f"Total number of steps: {len(steps)}")
+    # company_info = CompanyInformation()
+    # customer_info = CustomerInformation()
+    # email_sequence_info = EmailSequenceInformation()
+    # hooks = Hooks()
+    # for step in steps:
 
-        hooks.hooks.append(
-            hooks.create_new_hooks(company_info, customer_info, email_sequence_info)
-        )
-        hooks.email_number += 1
+    #     hooks.hooks.append(
+    #         hooks.create_new_hooks(company_info, customer_info, email_sequence_info)
+    #     )
+    #     hooks.email_number += 1
 
-    append_key_value_to_temp_json_file("hook", hooks.hooks)
+    # append_key_value_to_temp_json_file("hook", hooks.hooks)
+    # print(hooks.hooks)

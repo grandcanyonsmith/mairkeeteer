@@ -99,6 +99,7 @@ def create_sequence(
 
 
 def main():
+
     (
         company_information,
         customer_information,

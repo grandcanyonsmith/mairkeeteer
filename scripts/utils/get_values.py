@@ -19,10 +19,13 @@ def _get_data_from_file(file_name):
 
 
 def get_key_values_from_temp_json_file(key):
-    temp_file = get_file_path("files/data/examples/temp/temp.jsonl")
+    temp_file = get_file_path("files/data/temp/temp.jsonl")
     with open(temp_file, "r") as f:
-        values = [json.loads(line)[key] for line in f]
-    return values
+        for line in f:
+            data = json.loads(line)
+            if key in data:
+                return data[key]
+    # return values
 
 def _openai_response(prompt):
     secrets = openai_secret_manager.get_secret("openai")

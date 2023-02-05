@@ -35,85 +35,88 @@ class CompanyInformation:
 
     def get_name(self):
         values = get_background_information(info_name="company_info")
-        return values[0] if values[0].strip() else input("What is your name? ")
+        print(values)
+        return (
+            values["name"] if values["name"].strip() else input("What is your name? ")
+        )
 
     def get_company_name(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[1]
-            if values[1].strip()
+            values["company_name"]
+            if values["company_name"].strip()
             else input("What is the name of your company? ")
         )
 
     def get_product_name(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[2]
-            if values[2].strip()
+            values["product_name"]
+            if values["product_name"].strip()
             else input("What is the name of your product? ")
         )
 
     def get_product_description(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[3]
-            if values[3].strip()
+            values["product_description"]
+            if values["product_description"].strip()
             else input("What is the description of your product? ")
         )
 
     def get_desire(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[4]
-            if values[4].strip()
+            values["desire"]
+            if values["desire"].strip()
             else input("What is the desire of your target market? ")
         )
 
     def get_common_mistake(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[5]
-            if values[5].strip()
+            values["common_mistake"]
+            if values["common_mistake"].strip()
             else input("What is the most common mistake made by your target market? ")
         )
 
     def get_ideal_market_avatar(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[6]
-            if values[6].strip()
+            values["ideal_person"]
+            if values["ideal_person"].strip()
             else input("Who is your ideal market avatar? ")
         )
 
     def get_common_enemy(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[7]
-            if values[7].strip()
+            values["common_enemy"]
+            if values["common_enemy"].strip()
             else input("What is the common enemy of your target market? ")
         )
 
     def get_everyday_person(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[8]
-            if values[8].strip()
+            values["everyday_person"]
+            if values["everyday_person"].strip()
             else input("Who is the everyday person in your target market? ")
         )
 
     def get_well_known_experts(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[9]
-            if values[9].strip()
+            values["well_known_experts"]
+            if values["well_known_experts"].strip()
             else input("Who are the well-known experts in your target market? ")
         )
 
     def get_realistic_time_frame(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[10]
-            if values[10].strip()
+            values["realistic_time_frame"]
+            if values["realistic_time_frame"].strip()
             else input(
                 "What is the realistic time frame for achieving success in your target market? "
             )
@@ -122,150 +125,111 @@ class CompanyInformation:
     def get_common_occurrence(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[11]
-            if values[11].strip()
-            else input("What is the most common occurrence in your target market? ")
+            values["common_occurrence"]
+            if values["common_occurrence"].strip()
+            else input("What is a common occurrence in your target market? ")
         )
 
     def get_consequence(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[12]
-            if values[12].strip()
-            else input(
-                "What is the consequence of the common occurrence in your target market? "
-            )
+            values["consequence"]
+            if values["consequence"].strip()
+            else input("What is the consequence of this common occurrence? ")
         )
 
     def get_traditional_way(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[13]
-            if values[13].strip()
-            else input(
-                "What is the traditional way of achieving success in your target market? "
-            )
+            values["traditional_way"]
+            if values["traditional_way"].strip()
+            else input("What is the traditional way of solving this problem? ")
         )
 
     def get_ideal_person(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[14]
-            if values[14].strip()
-            else input(
-                "Who is the ideal person to achieve success in your target market? "
-            )
+            values["ideal_person"]
+            if values["ideal_person"].strip()
+            else input("Who is the ideal person to solve this problem? ")
         )
 
     def get_painful_attempt(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[15]
-            if values[15].strip()
-            else input(
-                "What is the most painful attempt to achieve success in your target market? "
-            )
+            values["painful_attempt"]
+            if values["painful_attempt"].strip()
+            else input("What is a painful attempt to solve this problem? ")
         )
 
     def get_relatable_pain_point(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[16]
-            if values[16].strip()
-            else input("What is the most relatable pain point in your target market? ")
+            values["relatable_pain_point"]
+            if values["relatable_pain_point"].strip()
+            else input("What is a relatable pain point in your target market? ")
         )
 
     def get_commonly_used_vehicles(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[17]
-            if values[17].strip()
-            else input(
-                "What are the commonly used vehicles to achieve success in your target market? "
-            )
+            values["commonly_used_vehicles"]
+            if values["commonly_used_vehicles"].strip()
+            else input("What are the commonly used vehicles in your target market? ")
         )
 
     def get_solution(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[18]
-            if values[18].strip()
-            else input("What is the solution to the pain point in your target market? ")
+            values["solution"]
+            if values["solution"].strip()
+            else input("What is the solution? ")
         )
 
     def get_hack_tool_trick(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[19]
-            if values[19].strip()
-            else input(
-                "What is the hack, tool, or trick to achieve success in your target market? "
-            )
+            values["hack_tool_trick"]
+            if values["hack_tool_trick"].strip()
+            else input("What is the hack/tool/trick? ")
         )
 
     def get_common_achievement(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[20]
-            if values[20].strip()
-            else input("What is the most common achievement in your target market? ")
+            values["common_achievement"]
+            if values["common_achievement"].strip()
+            else input("What is a common achievement in your target market? ")
         )
 
     def get_perceived_experts(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[21]
-            if values[21].strip()
+            values["perceived_experts"]
+            if values["perceived_experts"].strip()
             else input("Who are the perceived experts in your target market? ")
         )
 
     def get_current_year(self):
         values = get_background_information(info_name="company_info")
-        return values[22] if values[22].strip() else input("What is the current year? ")
+        return (
+            values["current_year"]
+            if values["current_year"].strip()
+            else input("What is the current year? ")
+        )
 
     def get_easy_task(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[23]
-            if values[23].strip()
-            else input(
-                "What is the easiest task to achieve success in your target market? "
-            )
+            values["easy_task"]
+            if values["easy_task"].strip()
+            else input("What is an easy task in your target market? ")
         )
 
     def get_biggest_objection(self):
         values = get_background_information(info_name="company_info")
         return (
-            values[24]
-            if values[24].strip()
-            else input(
-                "What is the biggest objection to achieving success in your target market? "
-            )
+            values["biggest_objection"]
+            if values["biggest_objection"].strip()
+            else input("What is the biggest objection in your target market? ")
         )
-
-    # def display_information(self):
-    #     print("Name:", self.name)
-    #     print("Company Name:", self.company_name)
-    #     print("Product Name:", self.product_name)
-    #     print("Product Description:", self.product_description)
-    #     print("Desire:", self.desire)
-    #     print("Common Mistake:", self.common_mistake)
-    #     print("Ideal Market Avatar:", self.ideal_market_avatar)
-    #     print("Common Enemy:", self.common_enemy)
-    #     print("Everyday Person:", self.everyday_person)
-    #     print("Well-Known Experts:", self.well_known_experts)
-    #     print("Realistic Time Frame:", self.realistic_time_frame)
-    #     print("Common Occurrence:", self.common_occurrence)
-    #     print("Consequence:", self.consequence)
-    #     print("Traditional Way:", self.traditional_way)
-    #     print("Ideal Person:", self.ideal_person)
-    #     print("Painful Attempt:", self.painful_attempt)
-    #     print("Relatable Pain Point:", self.relatable_pain_point)
-    #     print("Commonly Used Vehicles:", self.commonly_used_vehicles)
-    #     print("Solution:", self.solution)
-    #     print("Hack/Tool/Trick:", self.hack_tool_trick)
-    #     print("Common Achievement:", self.common_achievement)
-    #     print("Perceived Experts:", self.perceived_experts)
-    #     print("Current Year:", self.current_year)
-    #     print("Easy Task:", self.easy_task)
-    #     print("Biggest Objection:", self.biggest_objection)
