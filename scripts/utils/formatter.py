@@ -10,10 +10,7 @@ class StringFormatter:
         Removes any leading digit or period from the given string and 
         returns the modified string.
         """
-        
-        print(string,"string\n")
-        while string[0].isdigit() or string.startswith(".") or ":" in string:
-            string = string[string.index(".") + 1 :] if string[0].isdigit() or string.startswith(".") else string[string.index(":") + 1 :]
+        return string[2:] if string[0].isdigit() and string[1] == "." else string
 
     # if there is a number and : remove everything before the : for example: 1. hello -> hello
     def remove_colon_from_string(self, string: str) -> str:
@@ -43,6 +40,7 @@ class StringFormatter:
         leading digit or period and capitalizing the first letter."""
         list_of_strings = self.remove_empty_strings(list_of_strings)
         list_of_strings = [self.remove_colon_from_string(string) for string in list_of_strings]
+        list_of_strings = [self.remove_digits_and_period_from_string(string) for string in list_of_strings]
         list_of_strings = [self.strip_string(string) for string in list_of_strings]
         if "" in list_of_strings:
             list_of_strings.remove("")

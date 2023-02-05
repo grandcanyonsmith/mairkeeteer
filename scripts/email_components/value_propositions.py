@@ -5,10 +5,13 @@ import openai
 
 sys.path.append("../..")  # Adds higher directory to python modules path.
 from scripts.utils.formatter import StringFormatter
-from scripts.utils.get_values import (append_key_value_to_temp_json_file,
-                                      get_key_values_from_temp_json_file)
-from scripts.utils.openai_secret_manager import \
-    OpenAiSecretManager as openai_secret_manager
+from scripts.utils.get_values import (
+    append_key_value_to_temp_json_file,
+    get_key_values_from_temp_json_file,
+)
+from scripts.utils.openai_secret_manager import (
+    OpenAiSecretManager as openai_secret_manager,
+)
 
 
 class ValuePropositionsCreator:

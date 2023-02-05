@@ -420,34 +420,118 @@ import json
 #         print("Email:", email, end="\n\n")
 
 
-import logging
+# import logging
+# import openai
+
+# from scripts.utils.formatter import StringFormatter
+# from scripts.utils.openai_secret_manager import OpenAiSecretManager as openai_secret_manager
+
+# class EmailSequence:
+#     def __init__(self):
+#         self.background_information = [
+#             "I sell online courses that teach people how to sell online courses",
+#             "It is called Course Creator Pro",
+#         ]
+#         self.desired_outcome = [
+#             "People just watched my webinar",
+#             "I want them sign up for another webinar",
+#         ]
+#         self.number_of_emails = 5
+
+#         self.email_sequence = []
+
+#         self.logger = logging.getLogger(__name__)
+#         logging.basicConfig(
+#             level=logging.DEBUG, format="%(asctime)s %(levelname)s %(name)s %(message)s"
+#         )
+
+#     def openai_generator(self, prompt):
+#         secrets = openai_secret_manager.get_secret("openai")
+#         openai.api_key = secrets
+
+#         response = openai.Completion.create(
+#             engine="text-davinci-003",
+#             prompt=prompt,
+#             temperature=0,
+#             max_tokens=500,
+#             top_p=1,
+#             frequency_penalty=0.2,
+#             presence_penalty=0,
+#         )
+#         return response["choices"][0]["text"]
+
+#     # def create_email_sequence(self):
+#     #     prompt = f'''Background information:\n"""\n{' '.join(self.background_information)}\n"""\n\nDesired Outcome:\n"""\n{' '.join(self.desired_outcome)}\n"""Write a subject line for an email to achieve the desired outcome\n:"""'''
+#     #     email_sequence_text = self.openai_generator(prompt)
+#     #     self.email_sequence = [email for email in email_sequence_text.split("\n") if email]
+#     #     return formatter.format_everything(self.email_sequence)
+
+#     def create_steps(self):
+#         prompt = f'''Background information:\n"""\n{self.background_information}\n"""\n\nDesired Outcome:\n"""\n{self.desired_outcome}\n"""\n\nNumber of emails in the email sequence:\n"""\n{self.number_of_emails}\n"""\n\nSteps in email sequence\n"""\n'''  # noqa
+#         steps_text = self.openai_generator(prompt)
+#         self.steps = [step for step in steps_text.split("\n") if step]
+#         return formatter.format_everything(self.steps)
+
+#     def __getitem__(self, index):
+#         return self.email_sequence[index]
+
+#     def __len__(self):
+#         return len(self.email_sequence)
+
+#     def __repr__(self):
+#         return f"EmailSequence(email_sequence={self.email_sequence})"
+
+#     def __str__(self):
+#         self.index = 0
+#         return f"EmailSequence(email_sequence={self.email_sequence})"
+
+#     def __iter__(self):
+#         return self
+
+#     def __next__(self):
+#         if self.index >= len(self):
+#             raise StopIteration
+#         self.index += 1
+#         return self[self.index - 1]
+
+#     def __call__(self):
+#         return self
+
+#     def __add__(self, other):
+#         return EmailSequence(email_sequence=self.email_sequence + other.email_sequence)
+
+# if __name__ == "__main__":
+#     formatter = StringFormatter()
+#     # Create the email sequence
+#     email_sequence = EmailSequence()
+#     # email_sequences = email_sequence.create_email_sequence()
+#     # for email in email_sequences:
+#     #     print("Email:", email, end="\n\n")
+#     # # Create the steps
+#     steps = email_sequence.create_steps()
+#     for step in steps:
+#         print("Step:", step, end="\n\n")
+
+
+
+
 import openai
 
 from scripts.utils.formatter import StringFormatter
-from scripts.utils.openai_secret_manager import OpenAiSecretManager as openai_secret_manager
+from scripts.utils.openai_secret_manager import \
+    OpenAiSecretManager as openai_secret_manager
+
 
 class EmailSequence:
-    def __init__(self):
-        self.background_information = [
-            "I sell online courses that teach people how to sell online courses",
-            "It is called Course Creator Pro",
-        ]
-        self.desired_outcome = [
-            "People just watched my webinar",
-            "I want them sign up for another webinar",
-        ]
-        self.number_of_emails = 5
+    def __init__(self, background_information, desired_outcome, number_of_emails):
+        self.background_information = background_information
+        self.desired_outcome = desired_outcome
+        self.number_of_emails = number_of_emails
 
-        self.email_sequence = []
-
-        self.logger = logging.getLogger(__name__)
-        logging.basicConfig(
-            level=logging.DEBUG, format="%(asctime)s %(levelname)s %(name)s %(message)s"
-        )
+        self.steps = []
 
     def openai_generator(self, prompt):
-        secrets = openai_secret_manager.get_secret("openai")
-        openai.api_key = secrets
+        openai.api_key = openai_secret_manager.get_secret("openai")
 
         response = openai.Completion.create(
             engine="text-davinci-003",
@@ -455,59 +539,31 @@ class EmailSequence:
             temperature=0,
             max_tokens=500,
             top_p=1,
-            frequency_penalty=0.2,
-            presence_penalty=0,
         )
         return response["choices"][0]["text"]
-
-    # def create_email_sequence(self):
-    #     prompt = f'''Background information:\n"""\n{' '.join(self.background_information)}\n"""\n\nDesired Outcome:\n"""\n{' '.join(self.desired_outcome)}\n"""Write a subject line for an email to achieve the desired outcome\n:"""'''
-    #     email_sequence_text = self.openai_generator(prompt)
-    #     self.email_sequence = [email for email in email_sequence_text.split("\n") if email]
-    #     return formatter.format_everything(self.email_sequence)
 
     def create_steps(self):
         prompt = f'''Background information:\n"""\n{self.background_information}\n"""\n\nDesired Outcome:\n"""\n{self.desired_outcome}\n"""\n\nNumber of emails in the email sequence:\n"""\n{self.number_of_emails}\n"""\n\nSteps in email sequence\n"""\n'''  # noqa
         steps_text = self.openai_generator(prompt)
-        self.steps = [step for step in steps_text.split("\n") if step]
-        return formatter.format_everything(self.steps)
+        self.steps = steps_text.split("\n")
+        return self.steps
 
-    def __getitem__(self, index):
-        return self.email_sequence[index]
-
-    def __len__(self):
-        return len(self.email_sequence)
-
-    def __repr__(self):
-        return f"EmailSequence(email_sequence={self.email_sequence})"
-
-    def __str__(self):
-        self.index = 0
-        return f"EmailSequence(email_sequence={self.email_sequence})"
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        if self.index >= len(self):
-            raise StopIteration
-        self.index += 1
-        return self[self.index - 1]
-
-    def __call__(self):
-        return self
-
-    def __add__(self, other):
-        return EmailSequence(email_sequence=self.email_sequence + other.email_sequence)
 
 if __name__ == "__main__":
-    formatter = StringFormatter()
-    # Create the email sequence
-    email_sequence = EmailSequence()
-    # email_sequences = email_sequence.create_email_sequence()
-    # for email in email_sequences:
-    #     print("Email:", email, end="\n\n")
-    # # Create the steps
+    background_information = [
+        "I sell online courses that teach people how to sell online courses",
+        "It is called Course Creator Pro",
+    ]
+    desired_outcome = [
+        "People just watched my webinar",
+        "I want them sign up for another webinar",
+    ]
+    number_of_emails = 5
+
+    email_sequence = EmailSequence(
+        background_information, desired_outcome, number_of_emails
+    )
     steps = email_sequence.create_steps()
-    for step in steps:
-        print("Step:", step, end="\n\n")
+    formatter = StringFormatter()
+    steps = formatter.format_everything(steps)
+    print("Steps:", steps)
