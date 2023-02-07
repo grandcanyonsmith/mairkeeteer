@@ -6,7 +6,7 @@ import openai
 sys.path.append("../..")  # Adds higher directory to python modules path.
 from scripts.utils.formatter import StringFormatter
 from scripts.utils.get_values import (
-    append_key_value_to_temp_json_file,
+    append_key_value_to_json_file,
     get_key_values_from_temp_json_file,
 )
 from scripts.utils.openai_secret_manager import (
@@ -41,6 +41,7 @@ class ValuePropositionsCreator:
 
 
 if __name__ == "__main__":
+    temp_json_file = "/Users/canyonsmith/Documents/GitHub/autogluon/mairkeeteer/files/data/temp/temp.jsonl"
     value_propositions_creator = ValuePropositionsCreator()
     background_info = "\n".join(
         [
@@ -55,6 +56,7 @@ if __name__ == "__main__":
         ]
     )
     steps = get_key_values_from_temp_json_file("step")
+    print(len(steps))
     value_propositions = []
     for step in steps:
         value_propositions += value_propositions_creator.create_value_propositions(
@@ -62,4 +64,4 @@ if __name__ == "__main__":
         )
     print(value_propositions)
 
-    append_key_value_to_temp_json_file("value_proposition", value_propositions)
+    append_key_value_to_json_file("value_proposition", value_propositions, temp_json_file)

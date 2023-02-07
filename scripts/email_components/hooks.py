@@ -7,7 +7,7 @@ sys.path.append("../..")  # Adds higher directory to python modules path.
 from scripts.utils.get_values import get_hooks_examples_from_file
 from scripts.utils.get_values import (
     get_key_values_from_temp_json_file,
-    append_key_value_to_temp_json_file,
+    append_key_value_to_json_file,
     _openai_response,
 )
 from scripts.information.company_information import CompanyInformation
@@ -63,32 +63,20 @@ class Hooks:
         return len(self.hooks)
 
     def main(self):
+        temp_json_file = "/Users/canyons/Documents/GitHub/mairkeeteer/files/data/temp/temp.jsonl"
         company_info = CompanyInformation()
         customer_info = CustomerInformation()
         email_sequence_info = EmailSequenceInformation()
+        steps = range(1, email_sequence_info.number_of_emails + 1)
         for step in steps:
             self.hooks.append(
                 self.create_new_hooks(company_info, customer_info, email_sequence_info)
             )
             self.email_number += 1
-        append_key_value_to_temp_json_file("hook", self.hooks)
+        append_key_value_to_json_file("hook", self.hooks, temp_json_file)
 
-# hooks = Hooks()
-# hooks.main()
-    # import os
-    # print(os.getcwd())
-    # steps = get_key_values_from_temp_json_file("step")
-    # print(steps, f"Total number of steps: {len(steps)}")
-    # company_info = CompanyInformation()
-    # customer_info = CustomerInformation()
-    # email_sequence_info = EmailSequenceInformation()
-    # hooks = Hooks()
-    # for step in steps:
 
-    #     hooks.hooks.append(
-    #         hooks.create_new_hooks(company_info, customer_info, email_sequence_info)
-    #     )
-    #     hooks.email_number += 1
-
-    # append_key_value_to_temp_json_file("hook", hooks.hooks)
-    # print(hooks.hooks)
+if __name__ == "__main__":
+    hooks = Hooks()
+    hooks.main()
+    print(hooks)

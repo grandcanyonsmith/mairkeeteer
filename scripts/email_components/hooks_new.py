@@ -107,3 +107,4 @@ if __name__ == "__main__":
         hooks.hooks.append(hook)
         hooks.email_number += 1
     hooks = hooks.hooks
+    print(hooks, f"Total number of hooks: {len(hooks)}")

@@ -6,7 +6,7 @@ def get_email_sequence_types():
     Reads the email sequence types from the file.
     """
     with open(
-        "/Users/canyons/Documents/GitHub/mairkeeteer/files/data/examples/email_sequence_types.jsonl",
+        "/Users/canyonsmith/Documents/GitHub/autogluon/mairkeeteer/files/data/examples/email_sequence_types.jsonl",
         "r",
     ) as f:
         return [json.loads(line) for line in f]

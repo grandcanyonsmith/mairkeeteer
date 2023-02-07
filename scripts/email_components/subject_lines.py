@@ -6,7 +6,7 @@ sys.path.append("../..")  # Adds higher directory to python modules path.
 from scripts.utils.get_values import get_hooks_examples_from_file
 from scripts.utils.get_values import (
     get_key_values_from_temp_json_file,
-    append_key_value_to_temp_json_file,
+    append_key_value_to_json_file,
     _openai_response,
 )
 from scripts.utils.formatter import StringFormatter
@@ -43,6 +43,7 @@ if __name__ == "__main__":
         ]
     )
     steps = get_key_values_from_temp_json_file("step")
+    print(steps)
     for step in steps:
         subject_lines = subject_lines_creator.create_subject_lines(
             background_info, desired_outcome, step, len(steps)
