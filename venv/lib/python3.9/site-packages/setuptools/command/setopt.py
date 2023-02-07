@@ -22,8 +22,8 @@ def config_file(kind="local"):
             os.path.dirname(distutils.__file__), 'distutils.cfg'
         )
     if kind == 'user':
-        dot = os.name == 'posix' and '.' or ''
-        return os.path.expanduser(convert_path("~/%spydistutils.cfg" % dot))
+        dot = '.' if os.name == 'posix' else ''
+        return os.path.expanduser(convert_path(f"~/{dot}pydistutils.cfg"))
     raise ValueError(
         "config_file() type must be 'local', 'global', or 'user'", kind
     )

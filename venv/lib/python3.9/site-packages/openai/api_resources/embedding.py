@@ -22,7 +22,7 @@ class Embedding(EngineAPIResource):
         start = time.time()
         timeout = kwargs.pop("timeout", None)
 
-        user_provided_encoding_format = kwargs.get("encoding_format", None)
+        user_provided_encoding_format = kwargs.get("encoding_format")
 
         # If encoding format was not explicitly specified, we opaquely use base64 for performance
         if not user_provided_encoding_format:
@@ -62,7 +62,7 @@ class Embedding(EngineAPIResource):
         start = time.time()
         timeout = kwargs.pop("timeout", None)
 
-        user_provided_encoding_format = kwargs.get("encoding_format", None)
+        user_provided_encoding_format = kwargs.get("encoding_format")
 
         # If encoding format was not explicitly specified, we opaquely use base64 for performance
         if not user_provided_encoding_format:

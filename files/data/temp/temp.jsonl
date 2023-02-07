@@ -1,5 +1,60 @@
-{"step": "Reminder of items left in cart - this email should remind the customer of the items they left in their shopping cart and encourage them to complete their purchase.", "step_number": 1, "hook": "\nDon't Miss Out! Complete Your Purchase Now.", "value_proposition": "The value proposition for this email should be that course creator pro is the perfect solution for anyone looking to create and sell their own online courses. it provides step-by-step guidance and support to help you get started quickly and easily. plus, with our money-back guarantee, you can be sure that you're making a safe investment.", "call_to_action": "The call to action should be to \"complete your purchase now\" and provide a link to the checkout page."}
-{"step": "Discount offer - this email should offer the customer a discount on their purchase if they complete it within a certain time frame.", "step_number": 2, "hook": "\n\"Unlock Your Expertise Now: Get a Discount!\"", "value_proposition": "The value proposition for this email should be that customers can save money by taking advantage of the limited-time discount offer on course creator pro.", "call_to_action": "The call to action should be to take advantage of the limited-time discount offer and purchase the course creator pro course now."}
-{"step": "Final reminder - this email should be a final reminder to the customer that their items are still in their cart and that they should complete their purchase soon.", "step_number": 3, "hook": "\nDon't miss out! Complete your purchase now.", "value_proposition": "The value proposition for this email should be that course creator pro is the perfect solution for anyone looking to create and sell their own online courses. it provides step-by-step guidance, helpful resources, and expert advice to help you get started quickly and easily. plus, with our money-back guarantee, you can be sure that you're making a safe investment.", "call_to_action": "The call to action should be to purchase the course now and take advantage of the limited-time offer."}
-{"Email": "Dear [Name],\n\nWe noticed that you left some items in your shopping cart and wanted to remind you that you can still complete your purchase. Don't miss out! Complete your purchase now and unlock your expertise with Course Creator Pro.\n\nCourse Creator Pro is the perfect solution for anyone looking to create and sell their own online courses. It provides step-by-step guidance, helpful resources, and expert advice to help you get started quickly and easily. Plus, with our money-back guarantee, you can be sure that you're making a safe investment.\n\nFor a limited time only, we are offering a discount on Course Creator Pro. Take advantage of this offer now and save money on your purchase.\n\nDon't miss out! Complete your purchase now and unlock your expertise with Course Creator Pro.\n\nSincerely, \n[Your Name]"}
-{"Email": "Dear [Name],\n\nWe noticed that you left some items in your shopping cart. We want to make sure you don't miss out on the perfect solution for creating and selling your own online courses. \n\nCourse Creator Pro is the perfect solution for anyone looking to create and sell their own online courses. It provides step-by-step guidance and support to help you get started quickly and easily. Plus, with our money-back guarantee, you can be sure that you're making a safe investment. \n\nDon't miss out on this opportunity! Complete your purchase now and start creating your own online courses today. \n\nSincerely, \n[Your Name]"}
+{"step": "Reminder of items left in the cart", "step_number": 1, "call_to_action": "Click the link below to complete your purchase of course creator pro and start learning how to create and sell online courses today!", "hook": "\n\"Unlock Your Potential: Learn How to Create Your Own Course\""}
+{"step": "Offer a discount or incentive to complete the purchase", "step_number": 2, "call_to_action": "Take advantage of this limited-time offer and get instant access to course creator pro today!", "hook": "\n\"Unlock the Secrets of Course Creation: Nurture Your Leads Now!\""}
+{"step": "Final reminder and call to action to complete the purchase", "step_number": 3, "call_to_action": "Act now and get instant access to course creator pro! unlock the secrets to creating and selling successful online courses and start making money today!", "hook": "\n\"Unlock the Secrets of Course Creation: Nurture Your Leads Now!\""}
+
+
+
+import json
+import sys
+
+sys.path.append("../..")  # Adds higher directory to python modules path.
+from scripts.utils.formatter import StringFormatter
+from scripts.utils.get_values import (
+    append_key_value_to_json_file,
+    get_key_values_from_temp_json_file,
+    _openai_response,
+)
+from scripts.utils.openai_secret_manager import (
+    OpenAiSecretManager as openai_secret_manager,
+)
+
+
+class ValuePropositionsCreator:
+    def __init__(self):
+        self.formatter = StringFormatter()
+
+    def create_value_propositions(
+        self, background_info, desired_outcome, step, total_steps
+    ):
+        prompt = f'''Background information:\n"""\n{background_info}\n"""\n\nDesired Outcome:\n"""\n{desired_outcome}\n"""\n\nNumber of emails in the email sequence:\n"""\n{total_steps}\n"""\n\nStep:\n"""\n{step}\n"""\n\nWhat should the value proposition be for this email?\n"""\n'''  # noqa: E501  # noqa: E501
+        response = _openai_response(prompt)
+        return self.formatter.format_everything(response.split("\n"))
+
+
+if __name__ == "__main__":
+    temp_json_file = "/Users/canyonsmith/Documents/GitHub/autogluon/mairkeeteer/files/data/temp/temp.jsonl"
+    value_propositions_creator = ValuePropositionsCreator()
+    background_info = "\n".join(
+        [
+            "I sell online courses that teach people how to sell online courses",
+            "It is called Course Creator Pro",
+        ]
+    )
+    desired_outcome = "\n".join(
+        [
+            "People just watched my webinar",
+            "I want to send them an email sequence that will get them to buy my course",
+        ]
+    )
+    steps = get_key_values_from_temp_json_file("step")
+    print(len(steps))
+    value_propositions = []
+    for step in steps:
+        value_propositions += value_propositions_creator.create_value_propositions(
+            background_info, desired_outcome, step, len(steps)
+        )
+    print(value_propositions)
+
+    append_key_value_to_json_file(
+        "value_proposition", value_propositions, temp_json_file
+    )

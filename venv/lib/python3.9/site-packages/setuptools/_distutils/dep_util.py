@@ -51,7 +51,7 @@ def newer_pairwise (sources, targets):
 # newer_pairwise ()
 
 
-def newer_group (sources, target, missing='error'):
+def newer_group(sources, target, missing='error'):
     """Return true if 'target' is out-of-date with respect to any file
     listed in 'sources'.  In other words, if 'target' exists and is newer
     than every file in 'sources', return false; otherwise return true.
@@ -76,17 +76,14 @@ def newer_group (sources, target, missing='error'):
     target_mtime = os.stat(target)[ST_MTIME]
     for source in sources:
         if not os.path.exists(source):
-            if missing == 'error':      # blow up when we stat() the file
-                pass
-            elif missing == 'ignore':   # missing source dropped from
+            if missing == 'ignore':
                 continue                #  target's dependency list
-            elif missing == 'newer':    # missing source means target is
+            elif missing == 'newer':
                 return 1                #  out-of-date
 
         source_mtime = os.stat(source)[ST_MTIME]
         if source_mtime > target_mtime:
             return 1
-    else:
-        return 0
+    return 0
 
 # newer_group ()

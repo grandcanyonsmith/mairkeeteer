@@ -60,17 +60,17 @@ class BBCodeFormatter(Formatter):
         for ttype, ndef in self.style:
             start = end = ''
             if ndef['color']:
-                start += '[color=#%s]' % ndef['color']
-                end = '[/color]' + end
+                start += f"[color=#{ndef['color']}]"
+                end = f'[/color]{end}'
             if ndef['bold']:
                 start += '[b]'
-                end = '[/b]' + end
+                end = f'[/b]{end}'
             if ndef['italic']:
                 start += '[i]'
-                end = '[/i]' + end
+                end = f'[/i]{end}'
             if ndef['underline']:
                 start += '[u]'
-                end = '[/u]' + end
+                end = f'[/u]{end}'
             # there are no common BBcodes for background-color and border
 
             self.styles[ttype] = start, end

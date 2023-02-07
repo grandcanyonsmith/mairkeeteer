@@ -34,7 +34,7 @@ class Require:
     def full_name(self):
         """Return full package/distribution name, w/version"""
         if self.requested_version is not None:
-            return '%s-%s' % (self.name, self.requested_version)
+            return f'{self.name}-{self.requested_version}'
         return self.name
 
     def version_ok(self, version):
@@ -76,9 +76,7 @@ class Require:
     def is_current(self, paths=None):
         """Return true if dependency is present and up-to-date on 'paths'"""
         version = self.get_version(paths)
-        if version is None:
-            return False
-        return self.version_ok(version)
+        return False if version is None else self.version_ok(version)
 
 
 def maybe_close(f):
@@ -86,10 +84,8 @@ def maybe_close(f):
     def empty():
         yield
         return
-    if not f:
-        return empty()
 
-    return contextlib.closing(f)
+    return contextlib.closing(f) if f else empty()
 
 
 def get_module_constant(module, symbol, default=-1, paths=None):
@@ -151,7 +147,7 @@ def extract_constant(code, symbol, default=-1):
 
         if op == LOAD_CONST:
             const = code.co_consts[arg]
-        elif arg == name_idx and (op == STORE_NAME or op == STORE_GLOBAL):
+        elif arg == name_idx and op in [STORE_NAME, STORE_GLOBAL]:
             return const
         else:
             const = default

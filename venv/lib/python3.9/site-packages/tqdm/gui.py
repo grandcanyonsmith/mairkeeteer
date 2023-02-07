@@ -77,7 +77,7 @@ class tqdm_gui(std_tqdm):  # pragma: no cover
             ax.legend(("cur", "est"), loc='lower left')
         ax.grid()
         # ax.set_xlabel('seconds')
-        ax.set_ylabel((self.unit if self.unit else "it") + "/s")
+        ax.set_ylabel((self.unit or "it") + "/s")
         if self.unit_scale:
             plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
             ax.yaxis.get_offset_text().set_x(-0.15)

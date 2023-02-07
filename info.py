@@ -254,13 +254,15 @@ def main():
         customer_information,
         email_sequence_information,
     ) = intialize_background_info()
-    hooks = create_hooks(
-        company_information, customer_information, email_sequence_information
-    )
-    print(hooks)
-    create_sequence(
-        company_information, customer_information, email_sequence_information
-    )
+
+    
+    # hooks = create_hooks(
+    #     company_information, customer_information, email_sequence_information
+    # )
+    # print(hooks)
+    # create_sequence(
+    #     company_information, customer_information, email_sequence_information
+    # )
 
 
 if __name__ == "__main__":

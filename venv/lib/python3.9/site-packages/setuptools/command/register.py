@@ -13,6 +13,6 @@ class register(orig.register):
             + "instead (https://pypi.org/p/twine)"
         )
 
-        self.announce("ERROR: " + msg, log.ERROR)
+        self.announce(f"ERROR: {msg}", log.ERROR)
 
         raise RemovedCommandError(msg)

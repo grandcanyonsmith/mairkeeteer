@@ -82,7 +82,7 @@ def normalize_path_middleware(
             paths_to_check = []
             if "?" in request.raw_path:
                 path, query = request.raw_path.split("?", 1)
-                query = "?" + query
+                query = f"?{query}"
             else:
                 query = ""
                 path = request.raw_path
@@ -90,11 +90,11 @@ def normalize_path_middleware(
             if merge_slashes:
                 paths_to_check.append(re.sub("//+", "/", path))
             if append_slash and not request.path.endswith("/"):
-                paths_to_check.append(path + "/")
+                paths_to_check.append(f"{path}/")
             if remove_slash and request.path.endswith("/"):
                 paths_to_check.append(path[:-1])
             if merge_slashes and append_slash:
-                paths_to_check.append(re.sub("//+", "/", path + "/"))
+                paths_to_check.append(re.sub("//+", "/", f"{path}/"))
             if merge_slashes and remove_slash:
                 merged_slashes = re.sub("//+", "/", path)
                 paths_to_check.append(merged_slashes[:-1])
