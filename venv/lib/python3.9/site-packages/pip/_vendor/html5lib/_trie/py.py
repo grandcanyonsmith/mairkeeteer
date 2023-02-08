@@ -61,7 +61,4 @@ class Trie(ABCTrie):
         else:
             i = bisect_left(self._keys, prefix)
 
-        if i == len(self._keys):
-            return False
-
-        return self._keys[i].startswith(prefix)
+        return False if i == len(self._keys) else self._keys[i].startswith(prefix)

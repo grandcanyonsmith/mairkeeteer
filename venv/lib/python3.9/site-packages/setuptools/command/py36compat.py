@@ -67,11 +67,10 @@ class sdist_add_defaults:
                 if not got_it:
                     self.warn("standard file not found: should have one of " +
                               ', '.join(alts))
+            elif self._cs_path_exists(fn):
+                self.filelist.append(fn)
             else:
-                if self._cs_path_exists(fn):
-                    self.filelist.append(fn)
-                else:
-                    self.warn("standard file '%s' not found" % fn)
+                self.warn("standard file '%s' not found" % fn)
 
     def _add_defaults_optional(self):
         optional = ['test/test*.py', 'setup.cfg']
@@ -97,20 +96,21 @@ class sdist_add_defaults:
 
     def _add_defaults_data_files(self):
         # getting distribution.data_files
-        if self.distribution.has_data_files():
-            for item in self.distribution.data_files:
-                if isinstance(item, str):
-                    # plain file
-                    item = convert_path(item)
-                    if os.path.isfile(item):
-                        self.filelist.append(item)
-                else:
-                    # a (dirname, filenames) tuple
-                    dirname, filenames = item
-                    for f in filenames:
-                        f = convert_path(f)
-                        if os.path.isfile(f):
-                            self.filelist.append(f)
+        if not self.distribution.has_data_files():
+            return
+        for item in self.distribution.data_files:
+            if isinstance(item, str):
+                # plain file
+                item = convert_path(item)
+                if os.path.isfile(item):
+                    self.filelist.append(item)
+            else:
+                # a (dirname, filenames) tuple
+                dirname, filenames = item
+                for f in filenames:
+                    f = convert_path(f)
+                    if os.path.isfile(f):
+                        self.filelist.append(f)
 
     def _add_defaults_ext(self):
         if self.distribution.has_ext_modules():

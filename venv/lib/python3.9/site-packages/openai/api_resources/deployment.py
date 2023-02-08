@@ -26,7 +26,7 @@ class Deployment(CreateableAPIResource, ListableAPIResource, DeletableAPIResourc
                 param="model",
             )
 
-        scale_settings = kwargs.get("scale_settings", None)
+        scale_settings = kwargs.get("scale_settings")
         if scale_settings is None:
             raise InvalidRequestError(
                 "Must provide a 'scale_settings' parameter to create a Deployment.",

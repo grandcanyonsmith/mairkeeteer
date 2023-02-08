@@ -77,12 +77,11 @@ class install_lib(orig.install_lib):
         if not hasattr(sys, 'implementation'):
             return
 
-        base = os.path.join(
-            '__pycache__', '__init__.' + sys.implementation.cache_tag)
-        yield base + '.pyc'
-        yield base + '.pyo'
-        yield base + '.opt-1.pyc'
-        yield base + '.opt-2.pyc'
+        base = os.path.join('__pycache__', f'__init__.{sys.implementation.cache_tag}')
+        yield f'{base}.pyc'
+        yield f'{base}.pyo'
+        yield f'{base}.opt-1.pyc'
+        yield f'{base}.opt-2.pyc'
 
     def copy_tree(
             self, infile, outfile,
@@ -116,7 +115,6 @@ class install_lib(orig.install_lib):
 
     def get_outputs(self):
         outputs = orig.install_lib.get_outputs(self)
-        exclude = self.get_exclusions()
-        if exclude:
+        if exclude := self.get_exclusions():
             return [f for f in outputs if f not in exclude]
         return outputs

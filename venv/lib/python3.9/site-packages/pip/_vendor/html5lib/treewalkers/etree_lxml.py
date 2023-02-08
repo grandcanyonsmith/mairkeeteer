@@ -85,14 +85,8 @@ class FragmentWrapper(object):
     def __init__(self, fragment_root, obj):
         self.root_node = fragment_root
         self.obj = obj
-        if hasattr(self.obj, 'text'):
-            self.text = ensure_str(self.obj.text)
-        else:
-            self.text = None
-        if hasattr(self.obj, 'tail'):
-            self.tail = ensure_str(self.obj.tail)
-        else:
-            self.tail = None
+        self.text = ensure_str(self.obj.text) if hasattr(self.obj, 'text') else None
+        self.tail = ensure_str(self.obj.tail) if hasattr(self.obj, 'tail') else None
 
     def __getattr__(self, name):
         return getattr(self.obj, name)
@@ -100,10 +94,7 @@ class FragmentWrapper(object):
     def getnext(self):
         siblings = self.root_node.children
         idx = siblings.index(self)
-        if idx < len(siblings) - 1:
-            return siblings[idx + 1]
-        else:
-            return None
+        return siblings[idx + 1] if idx < len(siblings) - 1 else None
 
     def __getitem__(self, key):
         return self.obj[key]
@@ -139,7 +130,7 @@ class TreeWalker(base.NonRecursiveTreeWalker):
     def getNodeDetails(self, node):
         if isinstance(node, tuple):  # Text node
             node, key = node
-            assert key in ("text", "tail"), "Text nodes are text or tail, found %s" % key
+            assert key in ("text", "tail"), f"Text nodes are text or tail, found {key}"
             return base.TEXT, ensure_str(getattr(node, key))
 
         elif isinstance(node, Root):
@@ -158,9 +149,7 @@ class TreeWalker(base.NonRecursiveTreeWalker):
             return base.ENTITY, ensure_str(node.text)[1:-1]  # strip &;
 
         else:
-            # This is assumed to be an ordinary element
-            match = tag_regexp.match(ensure_str(node.tag))
-            if match:
+            if match := tag_regexp.match(ensure_str(node.tag)):
                 namespace, tag = match.groups()
             else:
                 namespace = None
@@ -169,8 +158,7 @@ class TreeWalker(base.NonRecursiveTreeWalker):
             for name, value in list(node.attrib.items()):
                 name = ensure_str(name)
                 value = ensure_str(value)
-                match = tag_regexp.match(name)
-                if match:
+                if match := tag_regexp.match(name):
                     attrs[(match.group(1), match.group(2))] = value
                 else:
                     attrs[(None, name)] = value
@@ -181,22 +169,16 @@ class TreeWalker(base.NonRecursiveTreeWalker):
         assert not isinstance(node, tuple), "Text nodes have no children"
 
         assert len(node) or node.text, "Node has no children"
-        if node.text:
-            return (node, "text")
-        else:
-            return node[0]
+        return (node, "text") if node.text else node[0]
 
     def getNextSibling(self, node):
         if isinstance(node, tuple):  # Text node
             node, key = node
-            assert key in ("text", "tail"), "Text nodes are text or tail, found %s" % key
+            assert key in ("text", "tail"), f"Text nodes are text or tail, found {key}"
             if key == "text":
                 # XXX: we cannot use a "bool(node) and node[0] or None" construct here
                 # because node[0] might evaluate to False if it has no child element
-                if len(node):
-                    return node[0]
-                else:
-                    return None
+                return node[0] if len(node) else None
             else:  # tail
                 return node.getnext()
 
@@ -205,10 +187,10 @@ class TreeWalker(base.NonRecursiveTreeWalker):
     def getParentNode(self, node):
         if isinstance(node, tuple):  # Text node
             node, key = node
-            assert key in ("text", "tail"), "Text nodes are text or tail, found %s" % key
+            assert key in ("text", "tail"), f"Text nodes are text or tail, found {key}"
             if key == "text":
                 return node
-            # else: fallback to "normal" processing
+                # else: fallback to "normal" processing
         elif node in self.fragmentChildren:
             return None
 

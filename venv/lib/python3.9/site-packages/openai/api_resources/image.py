@@ -11,7 +11,7 @@ class Image(APIResource):
 
     @classmethod
     def _get_url(cls, action):
-        return cls.class_url() + f"/{action}"
+        return f"{cls.class_url()}/{action}"
 
     @classmethod
     def create(
@@ -92,9 +92,7 @@ class Image(APIResource):
 
         url = cls._get_url("variations")
 
-        files: List[Any] = []
-        for key, value in params.items():
-            files.append((key, (None, value)))
+        files: List[Any] = [(key, (None, value)) for key, value in params.items()]
         files.append(("image", ("image", image, "application/octet-stream")))
         return requestor, url, files
 
@@ -175,9 +173,7 @@ class Image(APIResource):
 
         url = cls._get_url("edits")
 
-        files: List[Any] = []
-        for key, value in params.items():
-            files.append((key, (None, value)))
+        files: List[Any] = [(key, (None, value)) for key, value in params.items()]
         files.append(("image", ("image", image, "application/octet-stream")))
         if mask is not None:
             files.append(("mask", ("mask", mask, "application/octet-stream")))

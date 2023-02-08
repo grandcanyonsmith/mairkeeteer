@@ -1,1 +1,0 @@
-Background information:\n"""\n{self.background_information}\n"""\n\nDesired Outcome:\n"""\n{self.desired_outcome}\n"""\n\nNumber of emails in the email sequence:\n"""\nNUMBER_OF_EMAILS\n"""\n\nSteps in email sequence\n"""\n

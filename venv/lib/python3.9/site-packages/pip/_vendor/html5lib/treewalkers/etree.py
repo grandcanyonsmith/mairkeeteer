@@ -15,7 +15,9 @@ def getETreeBuilder(ElementTreeImplementation):
     ElementTree = ElementTreeImplementation
     ElementTreeCommentType = ElementTree.Comment("asd").tag
 
-    class TreeWalker(base.NonRecursiveTreeWalker):  # pylint:disable=unused-variable
+
+
+    class TreeWalker(base.NonRecursiveTreeWalker):    # pylint:disable=unused-variable
         """Given the particular ElementTree representation, this implementation,
         to avoid using recursion, returns "nodes" as tuples with the following
         content:
@@ -52,17 +54,14 @@ def getETreeBuilder(ElementTreeImplementation):
 
             else:
                 assert isinstance(node.tag, string_types), type(node.tag)
-                # This is assumed to be an ordinary element
-                match = tag_regexp.match(node.tag)
-                if match:
+                if match := tag_regexp.match(node.tag):
                     namespace, tag = match.groups()
                 else:
                     namespace = None
                     tag = node.tag
                 attrs = OrderedDict()
                 for name, value in list(node.attrib.items()):
-                    match = tag_regexp.match(name)
-                    if match:
+                    if match := tag_regexp.match(name):
                         attrs[(match.group(1), match.group(2))] = value
                     else:
                         attrs[(None, name)] = value
@@ -75,16 +74,13 @@ def getETreeBuilder(ElementTreeImplementation):
             else:
                 element, key, parents, flag = node, None, [], None
 
-            if flag in ("text", "tail"):
-                return None
+            if flag not in ("text", "tail") and element.text:
+                return element, key, parents, "text"
+            elif flag not in ("text", "tail") and len(element):
+                parents.append(element)
+                return element[0], 0, parents, None
             else:
-                if element.text:
-                    return element, key, parents, "text"
-                elif len(element):
-                    parents.append(element)
-                    return element[0], 0, parents, None
-                else:
-                    return None
+                return None
 
         def getNextSibling(self, node):
             if isinstance(node, tuple):
@@ -93,18 +89,16 @@ def getETreeBuilder(ElementTreeImplementation):
                 return None
 
             if flag == "text":
-                if len(element):
-                    parents.append(element)
-                    return element[0], 0, parents, None
-                else:
+                if not len(element):
                     return None
+                parents.append(element)
+                return element[0], 0, parents, None
+            elif element.tail and flag != "tail":
+                return element, key, parents, "tail"
+            elif key < len(parents[-1]) - 1:
+                return parents[-1][key + 1], key + 1, parents, None
             else:
-                if element.tail and flag != "tail":
-                    return element, key, parents, "tail"
-                elif key < len(parents[-1]) - 1:
-                    return parents[-1][key + 1], key + 1, parents, None
-                else:
-                    return None
+                return None
 
         def getParentNode(self, node):
             if isinstance(node, tuple):
@@ -113,17 +107,13 @@ def getETreeBuilder(ElementTreeImplementation):
                 return None
 
             if flag == "text":
-                if not parents:
-                    return element
-                else:
-                    return element, key, parents, None
-            else:
-                parent = parents.pop()
-                if not parents:
-                    return parent
-                else:
-                    assert list(parents[-1]).count(parent) == 1
-                    return parent, list(parents[-1]).index(parent), parents, None
+                return (element, key, parents, None) if parents else element
+            parent = parents.pop()
+            if not parents:
+                return parent
+            assert list(parents[-1]).count(parent) == 1
+            return parent, list(parents[-1]).index(parent), parents, None
+
 
     return locals()
 
