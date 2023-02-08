@@ -10,7 +10,7 @@ from scripts.utils.get_values import (
     get_key_values_from_temp_json_file,
     get_temporary_file_path,
 )
-from scripts.utils.openai_secret_manager import OpenAiSecretManager as openai_secret_manager
+from scripts.utils.get_values import get_openai_api_key
 
 logger = logging.getLogger(__name__)
 
@@ -101,3 +101,4 @@ if __name__ == "__main__":
     logger.info(f"Generated call-to-actions: {ctas}")
     temp_json_file = get_temporary_file_path()
     append_key_value_to_json_file("call_to_action", ctas, temp_json_file)
+    

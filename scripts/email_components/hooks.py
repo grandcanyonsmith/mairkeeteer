@@ -12,6 +12,8 @@ from scripts.utils.get_values import (
     get_key_values_from_temp_json_file,
     append_key_value_to_json_file,
     _openai_response,
+    get_hooks_examples_from_file,
+    get_openai_api_key
 )
 
 # Import necessary classes
@@ -72,10 +74,10 @@ class HookGenerator:
 
 
         Company Information
-        Name: {company_info.name}
-        Company Name: {company_info.company_name}
         Product Name: {company_info.product_name}
         Product Description: {company_info.product_description}
+        Common Mistake of Target Audience: {company_info.common_mistake}
+        Ideal Customer: {company_info.ideal_market_avatar}
 
 
 
@@ -85,7 +87,6 @@ class HookGenerator:
 
 
         Background Information
-        Desires: {customer_info.desires}
         Target Audience: {customer_info.target_audience}
         Pains: {customer_info.pains}
         Target Demographic: {customer_info.target_demographic}

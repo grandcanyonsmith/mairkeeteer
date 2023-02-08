@@ -3,11 +3,11 @@ import os
 from pathlib import Path
 
 import json
-from scripts.utils.openai_secret_manager import (
-    OpenAiSecretManager as openai_secret_manager,
-)
+
 import openai
 
+def get_openai_api_key():
+    return os.environ["OPENAI_API_KEY"]
 
 def _openai_response(prompt):
     """
@@ -16,7 +16,7 @@ def _openai_response(prompt):
     :return: the response from openai
     """
 
-    openai.api_key = openai_secret_manager.get_secret("openai")
+    openai.api_key = get_openai_api_key()
 
     response = openai.Completion.create(
         engine="text-davinci-003",
