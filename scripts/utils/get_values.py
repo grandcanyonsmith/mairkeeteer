@@ -3,10 +3,23 @@ import os
 from pathlib import Path
 
 import json
-from scripts.utils.openai_secret_manager import (
-    OpenAiSecretManager as openai_secret_manager,
-)
 import openai
+from configparser import ConfigParser
+
+config_file_path = (
+    "/Users/canyonsmith/Documents/GitHub/autogluon/mairkeeteer/config.ini"
+)
+
+
+def parse_config_file(config_file):
+    """
+    Parse the config file
+    :param config_file: the config file
+    :return: the config file
+    """
+    config = ConfigParser()
+    config.read(config_file)
+    return config
 
 
 def _openai_response(prompt):
@@ -16,7 +29,7 @@ def _openai_response(prompt):
     :return: the response from openai
     """
 
-    openai.api_key = openai_secret_manager.get_secret("openai")
+    openai.api_key = get_openai_api_key()
 
     response = openai.Completion.create(
         engine="text-davinci-003",
@@ -35,7 +48,7 @@ def get_temporary_file_path():
     Get the temporary file path
     :return: the temporary file path
     """
-    return os.environ.get("TEMPORARY_FILE_PATH")
+    return parse_config_file(config_file_path)["PATHS"]["TEMPORARY_FILE_PATH"]
 
 
 def get_background_information_file_path():
@@ -43,7 +56,25 @@ def get_background_information_file_path():
     Get the background information file path
     :return: the background information file path
     """
-    return os.environ.get("BACKGROUND_INFORMATION_FILE_PATH")
+    return parse_config_file(config_file_path)["PATHS"][
+        "BACKGROUND_INFORMATION_FILE_PATH"
+    ]
+
+
+def get_openai_api_key():
+    """
+    Get the openai api key
+    :return: the openai api key
+    """
+    return parse_config_file(config_file_path)["OPENAI"]["OPENAI_API_KEY"]
+
+
+def get_hooks_examples_file_path():
+    """
+    Get the hooks examples file path
+    :return: the hooks examples file path
+    """
+    return parse_config_file(config_file_path)["PATHS"]["HOOKS_EXAMPLES_FILE_PATH"]
 
 
 def get_key_values_from_temp_json_file(key):
@@ -77,7 +108,7 @@ def get_hooks_examples_from_file():
     return "\n".join(
         json.loads(line)["hook"]
         for line in open(
-            os.environ.get("HOOKS_EXAMPLES_FILE_PATH"),
+            get_hooks_examples_file_path(),
             "r",
         )
     )
@@ -120,6 +151,7 @@ def append_key_value_to_json_file(key, values, temp_json_file):
     with open(temp_json_file, "w") as f:
         for step in steps:
             f.write(json.dumps(step) + "\n")
+
 
 def _add_steps_to_temp_json_file(steps, temp_json_file):
     """
