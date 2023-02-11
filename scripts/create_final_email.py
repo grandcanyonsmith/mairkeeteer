@@ -19,6 +19,8 @@ from utils.openai_secret_manager import (
 temp_json_file = (
     "/Users/canyons/Documents/GitHub/mairkeeteer/files/data/temp/temp.jsonl"
 )
+
+
 # This class is used to create the final email
 class FinalEmailCreator:
     def __init__(self):
@@ -77,9 +79,6 @@ if __name__ == "__main__":
     final_email = final_email_creator.append_to_file(final_email, temp_json_file)
 
 
-
-
-
 # # {"step": "Reminder of items left in cart - this email should remind the customer of the items they left in their shopping cart and encourage them to complete their purchase.", "step_number": 1, "hook": "\nDon't Miss Out! Complete Your Purchase Now.", "value_proposition": "The value proposition for this email should be that course creator pro is the perfect solution for anyone looking to create and sell their own online courses. it provides step-by-step guidance and support to help you get started quickly and easily. plus, with our money-back guarantee, you can be sure that you're making a safe investment."}
 # import json
 # import sys
@@ -88,7 +87,7 @@ if __name__ == "__main__":
 # import jinja2
 
 # # Add higher directory to python modules path.
-# sys.path.append("../..")  
+# sys.path.append("../..")
 # # Import formatter class to format the output for better readability
 # from scripts.utils.formatter import StringFormatter
 # # Import utils functions to get values from OpenAI Secret Manager and temp JSON file
@@ -142,7 +141,7 @@ if __name__ == "__main__":
 #                 value = self.get_value_from_user(key)
 #                 append_key_value_to_json_file(key, value, temp_json_file)
 #             json_values.append(value)
-        
+
 #         # Create the final email using jinja2 templating library
 #         template = jinja2.Template("""Step in email sequence:\n"""\n{{step}}\n"""\n\nHook:\n"""\n{{hook}}\n"""\n\nValue Proposition:\n"""\n{{value_proposition}}\n"""\n\nCall To Action:\n"""\n{{call_to_action}}\n"""\n\nFinal Email\n"""\n""")
 #         return template.render(step=json_values[0], hook=json_values[1], value_proposition=json_values[2], call_to_action=json_values[3])
