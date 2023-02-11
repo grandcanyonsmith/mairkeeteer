@@ -11,7 +11,11 @@ class StringFormatter:
         Removes any leading digit or period from the given string and
         returns the modified string.
         """
-        return string[2:] if string[0].isdigit() and string[1] == "." else string
+        print(string)
+        try:
+            return string[2:] if string[0].isdigit() and string[1] == "." else string
+        except IndexError:
+            return string
 
     # if there is a number and : remove everything before the : for example: 1. hello -> hello
     def remove_colon_from_string(self, string: str) -> str:
