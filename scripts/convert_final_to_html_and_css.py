@@ -48,7 +48,7 @@ class HTMLTemplateFile:
 
 
 def generate_new_html_css():
-    prompt = """
+    new_prompt = """
     Example HTML and CSS for a course that teaches you how to create courses. The HTML progressively gets more complex & the CSS progressively gets more stylish.
     """
     with open(FILE_PATH, "r") as f:
@@ -78,7 +78,7 @@ def get_key_from_last_line_of_file(last_line, key):
 # have openai complete the prompt
 def openai_complete(prompt, last_line):
     all_text = pathlib.Path(FILE_PATH).read_text()
-    prompt = (
+    new_prompt = (
         f"""Example of converting Email into HTML/CSS\nEmail:\nSubject: Unock Your Course Creation Potential with Course Creator Pro\n\n\\Dear [Name],\n\n\n\Are you looking to create and launch your own successful online course? If so, I have the perfect solution for you\n\n\nIntroducing Course Creator Pro – a comprehensive course that teaches you everything you need to know about creating and launching your own online course. With our step-by-step guide, templates, and resources, you’ll be able to get started quickly and easily.\n\n\nLearn how to create an engaging course that will attract students and generate revenue. Get access to our exclusive resources and learn from our experienced instructors. With Course Creator Pro, you’ll have all the tools you need to become a successful online course creator.\n\n\nLearn more about Course Creator Pro today and unlock your course creation potential.\n\n\nSincerely, \n\n\n[Your Name]\nCode:\n<!DOCTYPE html> <html> <head> <style> .container max-width: 600px;margin: 0 auto; padding: 20px; text-align: center; font-family: Arial, sans-serif;  h2  font-size: 26px; font-weight: bold; margin-bottom: 20px;  p  font-size: 16px; line-height: 1.5; margin-bottom: 20px; a display: inline-block; padding: 10px 20px; background-color: #2ab27b; color: #fff; text-decoration: none; border-radius: 5px; margin-top: 20px; </style> </head> <body> <div class=\"container\"> <h2>Unlock Your Course Creation Potential with Course Creator Pro</h2> <p>Dear [Name],</p><p>Are you looking to create and launch your own successful online course? If so, I have the perfect solution for you. </p> <p>Introducing Course Creator Pro – a comprehensive course that teaches you everything you need to know about creating and launching your own online course. With our step-by-step guide, templates, and resources, you’ll be able to get started quickly and easily. </p> <p>Learn how to create an engaging course that will attract students and generate revenue. Get access to our exclusive resources and learn from our experienced instructors. With Course Creator Pro, you’ll have all the tools you need to become a successful online course creator.</p> <a href=\#\>Learn More Today</a> </div></body> </html>\n\n\nNew Email\n{last_line}\n\n\nNew Code\n""",
     )
     response = openai.Completion.create(
