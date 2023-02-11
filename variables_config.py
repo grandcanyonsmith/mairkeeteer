@@ -27,6 +27,5 @@ def get_config():
     return config
 
 
-if __name__ == "__main__":
-    if not os.path.exists(CONFIG_FILE_NAME):
-        create_config()
+if __name__ == "__main__" and not os.path.exists(CONFIG_FILE_NAME):
+    create_config()
