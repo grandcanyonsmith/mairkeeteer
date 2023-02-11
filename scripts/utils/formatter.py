@@ -51,3 +51,7 @@ class StringFormatter:
         if "" in list_of_strings:
             list_of_strings.remove("")
         return [string.capitalize() for string in list_of_strings]
+
+if __name__ == "__main__":
+    formatter = StringFormatter()
+    print(formatter.format_everything(["1. hello", "2. goodbye", "3. hi"]))

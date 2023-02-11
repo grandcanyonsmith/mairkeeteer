@@ -16,10 +16,6 @@ from scripts.utils.get_values import (
 # Imports StringFormatter class from scripts.utils.formatter
 from scripts.utils.formatter import StringFormatter
 
-# Imports OpenAiSecretManager class from scripts.utils.openai_secret_manager
-from scripts.utils.openai_secret_manager import (
-    OpenAiSecretManager as openai_secret_manager,
-)
 
 # Creates a class to create subject lines
 class CreateSubjectLines:

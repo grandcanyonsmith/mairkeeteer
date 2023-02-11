@@ -97,8 +97,7 @@ if __name__ == "__main__":
         for call_to_action in call_to_actions:
             logger.info(f"Generated call-to-action: {call_to_action}")
             ctas.append(call_to_action)
-
+            print(call_to_action)
     logger.info(f"Generated call-to-actions: {ctas}")
     temp_json_file = get_temporary_file_path()
     append_key_value_to_json_file("call_to_action", ctas, temp_json_file)
-    

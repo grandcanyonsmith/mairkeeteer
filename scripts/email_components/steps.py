@@ -141,13 +141,15 @@ import json
 import logging
 import unittest
 import typing
+import sys
+sys.path.append("/workspaces/mairkeeteer/scripts")
 
 # Adds higher directory to python modules path.
 
 
 # Imports utility functions from scripts.utils.
-from scripts.utils import formatter, get_values
 
+from scripts.utils import formatter, get_values
 # Imports the classes from scripts.information.
 from scripts.information import (
     CompanyInformation,
@@ -257,6 +259,10 @@ class EmailSequenceCreator:
 if __name__ == "__main__":
     # Sets the logging level to INFO.
     logging.basicConfig(level=logging.INFO)
+    import sys
+    import json
+    print(sys.path)
+
 
     # Intializes the background info.
     (

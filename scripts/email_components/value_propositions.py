@@ -52,7 +52,12 @@ class ValuePropositionCreator:
 
 if __name__ == "__main__":
     # Path to temp json file
-    TEMP_JSON_FILE = "/Users/canyonsmith/Documents/GitHub/autogluon/mairkeeteer/files/data/temp/temp.jsonl"
+    TEMP_JSON_FILE = "/workspaces/mairkeeteer/files/data/temp/temp_email.jsonl"
     company_information = CompanyInformation()
     customer_information = CustomerInformation()
-    value_proposition_creator = ValuePropositionCreator(step, total_steps, company_information, customer_information)
+    background_info = ValuePropositionCreator(company_information, customer_information)
+    desired_outcome = "I want to sell my product"
+    value_propositions = background_info.create_value_propositions(
+        background_info, desired_outcome
+    )
+    print(value_propositions)

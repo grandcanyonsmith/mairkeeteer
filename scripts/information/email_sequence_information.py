@@ -26,3 +26,9 @@ class EmailSequenceInformation:
             list_of_user_email_info
         )
         return type_of_email_sequence, sequence_purpose
+
+if __name__ == "__main__":
+    email_sequence_info = EmailSequenceInformation()
+    print(email_sequence_info.number_of_emails)
+    print(email_sequence_info.type_of_email_sequence)
+    print(email_sequence_info.sequence_purpose)

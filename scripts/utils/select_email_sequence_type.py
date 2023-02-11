@@ -1,15 +1,34 @@
 import json
+import sys
+import os
+from pathlib import Path
 
+import json
+import openai
+from configparser import ConfigParser
+
+def parse_config_file(config_file):
+    """
+    Parse the config file
+    :param config_file: the config file
+    :return: the config file
+    """
+    config = ConfigParser()
+    config.read(config_file)
+    return config
 
 def get_email_sequence_types():
     """
     Reads the email sequence types from the file.
     """
-    with open(
-        "/Users/canyonsmith/Documents/GitHub/autogluon/mairkeeteer/files/data/examples/email_sequence_types.jsonl",
-        "r",
-    ) as f:
-        return [json.loads(line) for line in f]
+    config_file_path = "/workspaces/mairkeeteer/config.ini"
+    email_sequence_types_file_path = parse_config_file(config_file_path)["PATHS"][
+        "EMAIL_SEQUENCE_TYPES_FILE_PATH"
+    ]
+    with open(email_sequence_types_file_path, "r") as f:
+        print(email_sequence_types_file_path)
+        email_sequence_types = json.load(f)
+    return email_sequence_types
 
 
 def print_email_sequence_types(email_sequence_types):
@@ -62,3 +81,4 @@ def get_email_sequence_from_user():
 
 if __name__ == "__main__":
     get_email_sequence_from_user()
+

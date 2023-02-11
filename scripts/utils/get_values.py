@@ -3,11 +3,26 @@ import os
 from pathlib import Path
 
 import json
-
 import openai
+from configparser import ConfigParser
+
+config_file_path = "/workspaces/mairkeeteer/config.ini"
+
+
+def parse_config_file(config_file):
+    """
+    Parse the config file
+    :param config_file: the config file
+    :return: the config file
+    """
+    config = ConfigParser()
+    config.read(config_file)
+    return config
+
 
 def get_openai_api_key():
     return os.environ["OPENAI_API_KEY"]
+
 
 def _openai_response(prompt):
     """
@@ -35,7 +50,7 @@ def get_temporary_file_path():
     Get the temporary file path
     :return: the temporary file path
     """
-    return os.environ.get("TEMPORARY_FILE_PATH")
+    return parse_config_file(config_file_path)["PATHS"]["TEMPORARY_FILE_PATH"]
 
 
 def get_background_information_file_path():
@@ -43,7 +58,25 @@ def get_background_information_file_path():
     Get the background information file path
     :return: the background information file path
     """
-    return os.environ.get("BACKGROUND_INFORMATION_FILE_PATH")
+    return parse_config_file(config_file_path)["PATHS"][
+        "BACKGROUND_INFORMATION_FILE_PATH"
+    ]
+
+
+def get_openai_api_key():
+    """
+    Get the openai api key
+    :return: the openai api key
+    """
+    return parse_config_file(config_file_path)["OPENAI"]["OPENAI_API_KEY"]
+
+
+def get_hooks_examples_file_path():
+    """
+    Get the hooks examples file path
+    :return: the hooks examples file path
+    """
+    return parse_config_file(config_file_path)["PATHS"]["HOOKS_EXAMPLES_FILE_PATH"]
 
 
 def get_key_values_from_temp_json_file(key):
@@ -77,7 +110,7 @@ def get_hooks_examples_from_file():
     return "\n".join(
         json.loads(line)["hook"]
         for line in open(
-            os.environ.get("HOOKS_EXAMPLES_FILE_PATH"),
+            get_hooks_examples_file_path(),
             "r",
         )
     )
@@ -121,6 +154,7 @@ def append_key_value_to_json_file(key, values, temp_json_file):
         for step in steps:
             f.write(json.dumps(step) + "\n")
 
+
 def _add_steps_to_temp_json_file(steps, temp_json_file):
     """
     Add the steps to the temp json file
@@ -132,3 +166,14 @@ def _add_steps_to_temp_json_file(steps, temp_json_file):
         for i, step in enumerate(steps):
             f.write(json.dumps({"step": step, "step_number": i + 1}) + "\n")
     print(f"Wrote email steps to {temp_json_file}")
+
+
+if __name__ == "__main__":
+    # Get the steps
+    steps = _openai_response(
+        f"""
+        {get_hooks_examples_from_file()}
+        {get_background_information("email")}
+        """
+    )
+    steps = steps.split("\n")

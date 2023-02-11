@@ -13,7 +13,7 @@ from scripts.utils.get_values import (
     append_key_value_to_json_file,
     _openai_response,
     get_hooks_examples_from_file,
-    get_openai_api_key
+    get_openai_api_key,
 )
 
 # Import necessary classes
@@ -28,9 +28,7 @@ import openai
 logging.basicConfig(level=logging.INFO)
 
 # Define constants
-TEMP_JSON_FILE = (
-    "/Users/canyonsmith/Documents/GitHub/autogluon/mairkeeteer/files/data/temp/temp.jsonl"
-)
+TEMP_JSON_FILE = "/Users/canyonsmith/Documents/GitHub/autogluon/mairkeeteer/files/data/temp/temp.jsonl"
 
 
 # Define Hooks class
@@ -135,9 +133,7 @@ class HookGenerator:
             company_info = CompanyInformation()
             customer_info = CustomerInformation()
             email_sequence_info = EmailSequenceInformation()
-            self.generate_hooks(
-                company_info, customer_info, email_sequence_info
-            )
+            self.generate_hooks(company_info, customer_info, email_sequence_info)
             append_key_value_to_json_file("hook", self.hooks, TEMP_JSON_FILE)
         except Exception as e:
             logging.error("An error occurred while running the main function: %s", e)
