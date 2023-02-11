@@ -1,6 +1,7 @@
 import os
 from configparser import ConfigParser
 
+CONFIG_FILE_NAME = "config.ini"
 config = ConfigParser()
 
 
@@ -17,14 +18,15 @@ def create_config():
         "EMAIL_SEQUENCE_TYPES_FILE_PATH": "/workspaces/mairkeeteer/files/data/examples/email_sequence_types.jsonl",
     }
 
-    with open("config.ini", "w") as configfile:
+    with open(CONFIG_FILE_NAME, "w") as configfile:
         return config.write(configfile)
 
 
 def get_config():
-    config.read("config.ini")
+    config.read(CONFIG_FILE_NAME)
     return config
 
+
 if __name__ == "__main__":
-    if not os.path.exists("config.ini"):
+    if not os.path.exists(CONFIG_FILE_NAME):
         create_config()
