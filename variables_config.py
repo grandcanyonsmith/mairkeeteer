@@ -6,8 +6,9 @@ config = ConfigParser()
 
 
 def create_config():
+    OPENAI_API_KEY = get_openai_api_key()
     config["OPENAI"] = {
-        "OPENAI_API_KEY": "",
+        "OPENAI_API_KEY": OPENAI_API_KEY,
         "OPENAI_ENGINE": "text-davinci-003",
     }
 
@@ -22,6 +23,18 @@ def create_config():
         return config.write(configfile)
 
 
+def ask_user_for_openai_api_key():
+    """
+    Ask the user for the OpenAI API key.
+    """
+    config.read(CONFIG_FILE_NAME)
+    return input("Please enter your OpenAI API key: ")
+    
+
+def get_openai_api_key():
+    if not os.path.exists(CONFIG_FILE_NAME):
+        return ask_user_for_openai_api_key()
+
 def get_config():
     config.read(CONFIG_FILE_NAME)
     return config
@@ -29,3 +42,5 @@ def get_config():
 
 if __name__ == "__main__" and not os.path.exists(CONFIG_FILE_NAME):
     create_config()
+    
+    
