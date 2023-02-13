@@ -1,4 +1,3 @@
-aiohttp
 openai
 termcolor
 webbrowser
