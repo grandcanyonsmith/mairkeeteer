@@ -15,6 +15,7 @@ from scripts.utils.get_values import (
 from scripts.information.company_information import CompanyInformation
 from scripts.information.customer_information import CustomerInformation
 from scripts.information.email_sequence_information import EmailSequenceInformation
+
 # from info import intialize_background_info, format_background_info
 
 
@@ -25,13 +26,11 @@ class ValuePropositionCreator:
         self.formatter = StringFormatter()
         self.company_information = company_information
         self.customer_information = customer_information
-        
 
     def create_value_propositions(
         self,
         step: int,
         total_steps: int,
-        
     ):
         """
         Creates value propositions for emails.

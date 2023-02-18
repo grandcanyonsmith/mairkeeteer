@@ -115,7 +115,7 @@ class HookGenerator:
 
         try:
             steps = range(1, int(email_sequence_info.number_of_emails) + 1)
-            for step in steps:
+            for _ in steps:
                 self.hooks.append(
                     self.generate_new_hook(
                         company_info, customer_info, email_sequence_info

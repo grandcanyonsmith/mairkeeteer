@@ -25,6 +25,5 @@ def get_config():
     config.read("config.ini")
     return config
 
-if __name__ == "__main__":
-    if not os.path.exists("config.ini"):
-        create_config()
+if __name__ == "__main__" and not os.path.exists("config.ini"):
+    create_config()
