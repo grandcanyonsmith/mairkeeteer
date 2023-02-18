@@ -4,6 +4,8 @@ class StringFormatter:
     """
 
     def __init__(self):
+        # Add a nested comment explaining why this method is empty, or complete the implementation.
+
         pass
 
     def remove_digits_and_period_from_string(self, string: str) -> str:
@@ -23,7 +25,6 @@ class StringFormatter:
         Removes any leading colon from the given string and
         returns the modified string.
         """
-
         return string[string.index(":") + 1 :] if ":" in string else string
 
     def strip_string(self, string: str) -> str:
@@ -55,6 +56,7 @@ class StringFormatter:
         if "" in list_of_strings:
             list_of_strings.remove("")
         return [string.capitalize() for string in list_of_strings]
+
 
 if __name__ == "__main__":
     formatter = StringFormatter()

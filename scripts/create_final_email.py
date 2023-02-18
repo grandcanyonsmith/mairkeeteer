@@ -18,6 +18,8 @@ from utils.openai_secret_manager import (
 temp_json_file = (
     "/Users/canyons/Documents/GitHub/mairkeeteer/files/data/temp/temp.jsonl"
 )
+
+
 # This class is used to create the final email
 class FinalEmailCreator:
     def __init__(self):
@@ -52,18 +54,12 @@ class FinalEmailCreator:
 
     # add a new key value pair to the json file
     def append_to_file(self, final_email, temp_json_file):
-        temp_json_file = (
-            "/Users/canyons/Documents/GitHub/mairkeeteer/files/data/temp/temp.jsonl"
-        )
         with open(temp_json_file, "a") as f:
             f.write(final_email)
             f.write("\n")
 
 
 if __name__ == "__main__":
-    temp_json_file = (
-        "/Users/canyons/Documents/GitHub/mairkeeteer/files/data/temp/temp.jsonl"
-    )
     final_email_creator = FinalEmailCreator()
     final_email = final_email_creator.create_final_email_from_temp_json_file(
         temp_json_file
@@ -74,6 +70,7 @@ if __name__ == "__main__":
     # write to file
     final_email = final_email_creator.convert_to_json(final_email)
     final_email = final_email_creator.append_to_file(final_email, temp_json_file)
+<<<<<<< HEAD
 
 
 # # {"step": "Reminder of items left in cart - this email should remind the customer of the items they left in their shopping cart and encourage them to complete their purchase.", "step_number": 1, "hook": "\nDon't Miss Out! Complete Your Purchase Now.", "value_proposition": "The value proposition for this email should be that course creator pro is the perfect solution for anyone looking to create and sell their own online courses. it provides step-by-step guidance and support to help you get started quickly and easily. plus, with our money-back guarantee, you can be sure that you're making a safe investment."}
@@ -193,3 +190,5 @@ if __name__ == "__main__":
 #             final_email_creator.logger.error(f"Error appending to file: {e}")
 #         else:
 #             print(final_email)
+=======
+>>>>>>> ac8678a8a1b0520cdbf89b558930048ee25cf6d5
