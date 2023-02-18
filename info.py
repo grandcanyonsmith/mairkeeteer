@@ -1,16 +1,16 @@
+# Import statements
 import os
 import openai
 
+# Import classes and functions
 from scripts.information.company_information import CompanyInformation
 from scripts.information.customer_information import CustomerInformation
 from scripts.information.email_sequence_information import EmailSequenceInformation
-
 from scripts.email_components.hooks import HookGenerator
 
+# Define functions
 
-def format_background_info(
-    company_information, customer_information, email_sequence_information, email_prompt
-):
+def format_background_info(company_information, customer_information, email_sequence_information, email_prompt):
     """
     Returns a formatted string that contains the background information for the email sequence.
     This information will be used to create the email prompt for OpenAI.
@@ -35,7 +35,6 @@ def format_background_info(
     {email_prompt}
     """
 
-
 def generate_email(email_prompt):
     """
     Uses OpenAI's API to generate an email based on the given email prompt.
@@ -50,41 +49,29 @@ def generate_email(email_prompt):
     )
     return response["choices"][0]["text"]
 
-
-def create_prompt_for_openai_to_generate_prompt(
-    company_information, customer_information, email_sequence_information
-):
+def create_prompt_for_openai_to_generate_prompt(company_information, customer_information, email_sequence_information):
     """
     Creates a prompt for OpenAI to generate an email prompt based on the background information.
     """
     prompt = """
     Using the information above, generate a prompt that will be used downstream for another AI to complete the task of creating an email sequence.
     """
-    format_background_info(
-        company_information, customer_information, email_sequence_information, prompt
-    )
+    format_background_info(company_information, customer_information, email_sequence_information, prompt)
     email_prompt = generate_email(prompt)
     return email_prompt.replace("\n", " ")  # strip newlines
 
-
-def create_email_sequence(
-    company_information, customer_information, email_sequence_information, prompt
-):
+def create_email_sequence(company_information, customer_information, email_sequence_information, prompt):
     """
     Creates an email sequence based on the background information and the email prompt.
     """
-    email_prompt = format_background_info(
-        company_information, customer_information, email_sequence_information, prompt
-    )
+    email_prompt = format_background_info(company_information, customer_information, email_sequence_information, prompt)
     return generate_email(email_prompt)
-
 
 def intialize_background_info():
     company_information = CompanyInformation()
     customer_information = CustomerInformation()
     email_sequence_information = EmailSequenceInformation()
     return company_information, customer_information, email_sequence_information
-
 
 def create_hooks(company_information, customer_information, email_sequence_information):
     """
@@ -115,28 +102,34 @@ def create_sequence(
     prompt = create_prompt_for_openai_to_generate_prompt(
         company_information, customer_information, email_sequence_information
     )
-    email_sequence = create_email_sequence(
-        company_information, customer_information, email_sequence_information, prompt
-    )
-    print(email_sequence)
-
-
-def main():
-    """
-    The main function that runs the program.
-    """
-    (
+    return create_email_sequence(
         company_information,
         customer_information,
         email_sequence_information,
-    ) = intialize_background_info()
-
-    hooks = HookGenerator()
-    hooks = hooks.generate_hooks_main()
-    create_sequence(
-        company_information, customer_information, email_sequence_information
+        prompt,
     )
 
+
+def main():
+    try:
+        (
+            company_information,
+            customer_information,
+            email_sequence_information,
+        ) = intialize_background_info()
+
+        email_sequence = create_sequence(
+            company_information, customer_information, email_sequence_information
+        )
+
+        # Print the generated email sequence
+        print(email_sequence)
+
+    except Exception as e:
+        print("An error occurred:", e)
+
+    # hooks = HookGenerator()
+    # hooks = hooks.generate_hooks_main()
 
 if __name__ == "__main__":
     main()

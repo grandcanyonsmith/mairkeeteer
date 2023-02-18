@@ -28,7 +28,7 @@ import openai
 logging.basicConfig(level=logging.INFO)
 
 # Define constants
-TEMP_JSON_FILE = "/Users/canyonsmith/Documents/GitHub/autogluon/mairkeeteer/files/data/temp/temp.jsonl"
+TEMP_JSON_FILE = "/workspaces/mairkeeteer/files/data/temp/temp.jsonl"
 
 
 # Define Hooks class

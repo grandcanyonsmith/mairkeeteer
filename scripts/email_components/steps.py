@@ -157,7 +157,7 @@ from scripts.information.customer_information import CustomerInformation
 from scripts.information.email_sequence_information import EmailSequenceInformation
 
 # Imports functions from info.
-from info import intialize_background_info, format_background_info
+from info import initialize_background_info, format_background_info
 
 # Gets the path to the temp.jsonl file.
 temp_json_file = "/workspaces/mairkeeteer/files/data/temp/temp.jsonl"
@@ -268,7 +268,7 @@ if __name__ == "__main__":
         company_information,
         customer_information,
         email_sequence_information,
-    ) = intialize_background_info()
+    ) = initialize_background_info()
 
     # Creates an EmailSequenceCreator object.
     email_sequence = EmailSequenceCreator(
