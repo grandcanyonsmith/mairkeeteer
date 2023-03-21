@@ -160,7 +160,8 @@ from scripts.information.email_sequence_information import EmailSequenceInformat
 from info import intialize_background_info, format_background_info
 
 # Gets the path to the temp.jsonl file.
-temp_json_file = "/workspaces/mairkeeteer/files/data/temp/temp.jsonl"
+temp_json_file = "/Users/canyons/mairkeeteer/files/data/temp/temp.jsonl"
+# temp_json_file = "/workspaces/mairkeeteer/files/data/temp/temp.jsonl"
 
 
 class EmailSequenceCreator:

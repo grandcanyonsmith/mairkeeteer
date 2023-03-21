@@ -1,8 +1,7 @@
 import openai
 
 from scripts.utils.formatter import StringFormatter
-from scripts.utils.get_values import get_background_information_file_path
-from scripts.utils.get_values import _openai_response
+from scripts.utils.get_values import get_background_information_file_path, _openai_response
 
 
 class EmailSequence:
@@ -10,11 +9,22 @@ class EmailSequence:
         self.background_information = background_information
         self.desired_outcome = desired_outcome
         self.number_of_emails = number_of_emails
-
         self.steps = []
 
     def create_steps(self):
-        prompt = f'''Background information:\n"""\n{self.background_information}\n"""\n\nDesired Outcome:\n"""\n{self.desired_outcome}\n"""\n\nNumber of emails in the email sequence:\n"""\n{self.number_of_emails}\n"""\n\nSteps in email sequence\n"""\n'''  # noqa
+        # Create the prompt for OpenAI
+        prompt = (
+            f"Background information:\n"
+            f'"""\n{self.background_information}\n"""\n\n'
+            f"Desired Outcome:\n"
+            f'"""\n{self.desired_outcome}\n"""\n\n'
+            f"Number of emails in the email sequence:\n"
+            f'"""\n{self.number_of_emails}\n"""\n\n'
+            f"Steps in email sequence\n"
+            f'"""\n'
+        )
+        
+        # Get OpenAI response
         steps_text = _openai_response(prompt)
         self.steps = steps_text.split("\n")
         return self.steps
@@ -31,10 +41,15 @@ if __name__ == "__main__":
     ]
     number_of_emails = 5
 
+    # Create email sequence
     email_sequence = EmailSequence(
         background_information, desired_outcome, number_of_emails
     )
     steps = email_sequence.create_steps()
+    
+    # Format the steps
     formatter = StringFormatter()
     steps = formatter.format_everything(steps)
+    
+    # Print the formatted steps
     print("Steps:", steps)

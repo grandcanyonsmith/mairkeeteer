@@ -2,17 +2,17 @@ import sys
 import json
 import os
 import logging
+from typing import List
 
 # Add higher directory to python modules path
 sys.path.append("../..")
 
 # Import necessary functions
-from scripts.utils.get_values import get_hooks_examples_from_file
 from scripts.utils.get_values import (
+    get_hooks_examples_from_file,
     get_key_values_from_temp_json_file,
     append_key_value_to_json_file,
     _openai_response,
-    get_hooks_examples_from_file,
     get_openai_api_key,
 )
 
@@ -21,9 +21,6 @@ from scripts.information.company_information import CompanyInformation
 from scripts.information.customer_information import CustomerInformation
 from scripts.information.email_sequence_information import EmailSequenceInformation
 
-# Import OpenAI
-import openai
-
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 
@@ -31,32 +28,29 @@ logging.basicConfig(level=logging.INFO)
 TEMP_JSON_FILE = "/Users/canyonsmith/Documents/GitHub/autogluon/mairkeeteer/files/data/temp/temp.jsonl"
 
 
-# Define Hooks class
 class HookGenerator:
-    """Class to generate hooks for email subject lines"""
+    """Class to generate hooks for email subject lines."""
 
     def __init__(self) -> None:
         self.hooks: List[str] = []
         self.hooks_examples: str = get_hooks_examples_from_file()
         self.email_number: int = self.count_hooks() + 1
 
-    # Count hooks
     def count_hooks(self) -> int:
-        """Count the number of hooks
+        """Count the number of hooks.
 
         Returns:
-            int: Number of hooks
+            int: Number of hooks.
         """
         return len(self.hooks)
 
-    # Create new hooks
     def generate_new_hook(
         self,
         company_info: CompanyInformation,
         customer_info: CustomerInformation,
         email_sequence_info: EmailSequenceInformation,
     ) -> str:
-        """Create new hook"""
+        """Create new hook."""
 
         logging.info("Generating new hook...")
 

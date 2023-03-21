@@ -18,7 +18,7 @@ from scripts.utils.formatter import StringFormatter
 
 
 # Creates a class to create subject lines
-class CreateSubjectLines:
+class SubjectLineCreator:
     # Initializes the class
     def __init__(self):
         self.formatter = StringFormatter()
@@ -43,67 +43,38 @@ class CreateSubjectLines:
         Returns:
         str: Formatted subject lines.
         """
-        # Logs the start of the function
         logging.info("Creating subject lines")
-        # Adds error handling
         try:
-            # Creates prompt
             prompt = f'''Background information:\n"""\n{background_info}\n"""\n\nDesired Outcome:\n"""\n{desired_outcome}\n"""\n\nStep:\n"""\n{step}\n"""\n\nTotal steps:\n"""\n{total_steps}\n"""\n\nCreate a subject line for this email\n"""\n'''
-            # Gets response from OpenAI
             response = _openai_response(prompt)
-            # Formats response
             formatted_response = self.formatter.format_everything(response.split("\n"))
-            # Logs the end of the function
             logging.info("Subject lines created")
-            # Returns formatted response
             return formatted_response
-        # Adds error handling
         except Exception as e:
-            # Logs the error
             logging.error(e)
-            # Raises the error
             raise
 
-    # Main function to create subject lines
     def main(self, background_info: str, desired_outcome: str) -> str:
-        """
-        Main function to create subject lines.
-
-        Parameters:
-        background_info (str): Background information.
-        desired_outcome (str): Desired outcome.
-
-        Returns:
-        str: Formatted subject lines.
-        """
-        # Logs the start of the function
         logging.info("Starting main function")
-        # Gets steps from temp json file
         steps = get_key_values_from_temp_json_file("step")
-        # Iterates through steps
+
         for step in steps:
-            # Creates subject lines
             subject_lines = self.create_subject_lines(
                 background_info, desired_outcome, step, len(steps)
             )
-            # Iterates through subject lines
             for subject_line in subject_lines:
                 print(subject_line)
-        # Logs the end of the function
         logging.info("Main function finished")
 
 
 if __name__ == "__main__":
-    # Initializes the class
-    subject_lines_creator = CreateSubjectLines()
-    # Creates background info
+    subject_lines_creator = SubjectLineCreator()
     background_info = "\n".join(
         [
             "I sell online courses that teach people how to sell online courses",
             "It is called Course Creator Pro",
         ]
     )
-    # Creates desired outcome
     desired_outcome = "\n".join(
         [
             "People just watched my webinar",
@@ -113,7 +84,5 @@ if __name__ == "__main__":
     try:
         subject_lines_creator.main(background_info, desired_outcome)
     except Exception as e:
-        # Logs the error
         logging.error(e)
-        # Raises the error
         raise
