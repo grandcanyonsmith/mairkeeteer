@@ -1,26 +1,11 @@
 import json
-import pathlib
-import sys
 import webbrowser
-
-FILE_PATH = "/Users/canyons/Documents/GitHub/mairkeeteer/files/data/examples/html_css_example_email.jsonl"
 import openai
 
 
-def openai_complete(prompt):
-    # get the value of the 'Email' key of the last line
-    all_text = json.loads(all_text)["Email"]
-    response = openai.Completion.create(
-        model="text-davinci-003",
-        prompt=f"{prompt}\n\n{all_text}",
-        max_tokens=1200,
-        temperature=0.7,
-        top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0,
-        stop=["}\n"],
-    )
-    return response["choices"][0]["text"]
+OPENAI_API_KEY = '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'
+HTML_CSS_EXAMPLES_FILE = "/Users/canyons/mairkeeteer/files/data/examples/html_css_example.jsonl"
+HTML_CSS_CODE_EXAMPLES_FILE = "/Users/canyons/mairkeeteer/files/data/examples/html_css_code_example.jsonl"
 
 
 class HTMLTemplateFile:
@@ -44,42 +29,16 @@ class HTMLTemplateFile:
         webbrowser.open("file:///tmp/example.html")
 
 
-def generate_new_html_css():
-    new_prompt = """
-    Example HTML and CSS for a course that teaches you how to create courses. The HTML progressively gets more complex & the CSS progressively gets more stylish.
-    """
-    with open(FILE_PATH, "r") as f:
-        lines = f.readlines() + [openai_complete(prompt)]
-
-        with open(FILE_PATH, "w") as f:
-            f.writelines(lines)
+def get_last_line_of_file(file_path):
+    with open(file_path, "r") as f:
+        last_line = f.readlines()[-1]
+    return last_line
 
 
-def render_html_in_browser():
-    html_css_file = HTMLTemplateFile(FILE_PATH)
-    html_css_file.render_html_in_browser(str(html_css_file.get_code_examples()[-1]))
-    print("rendered")
-
-
-# create a function to get the last line of the file
-def get_last_line_of_file(file_name):
-    with open(file_name) as f:
-        lines = f.readlines()
-        return lines[-1]
-
-
-def get_key_from_last_line_of_file(last_line, key):
-    return json.loads(last_line)[key]
-
-
-# have openai complete the prompt
-def openai_complete(prompt, last_line):
-    new_prompt = (
-        f"""Example of converting Email into HTML/CSS\nEmail:\nSubject: Unock Your Course Creation Potential with Course Creator Pro\n\n\\Dear [Name],\n\n\n\Are you looking to create and launch your own successful online course? If so, I have the perfect solution for you\n\n\nIntroducing Course Creator Pro – a comprehensive course that teaches you everything you need to know about creating and launching your own online course. With our step-by-step guide, templates, and resources, you’ll be able to get started quickly and easily.\n\n\nLearn how to create an engaging course that will attract students and generate revenue. Get access to our exclusive resources and learn from our experienced instructors. With Course Creator Pro, you’ll have all the tools you need to become a successful online course creator.\n\n\nLearn more about Course Creator Pro today and unlock your course creation potential.\n\n\nSincerely, \n\n\n[Your Name]\nCode:\n<!DOCTYPE html> <html> <head> <style> .container max-width: 600px;margin: 0 auto; padding: 20px; text-align: center; font-family: Arial, sans-serif;  h2  font-size: 26px; font-weight: bold; margin-bottom: 20px;  p  font-size: 16px; line-height: 1.5; margin-bottom: 20px; a display: inline-block; padding: 10px 20px; background-color: #2ab27b; color: #fff; text-decoration: none; border-radius: 5px; margin-top: 20px; </style> </head> <body> <div class=\"container\"> <h2>Unlock Your Course Creation Potential with Course Creator Pro</h2> <p>Dear [Name],</p><p>Are you looking to create and launch your own successful online course? If so, I have the perfect solution for you. </p> <p>Introducing Course Creator Pro – a comprehensive course that teaches you everything you need to know about creating and launching your own online course. With our step-by-step guide, templates, and resources, you’ll be able to get started quickly and easily. </p> <p>Learn how to create an engaging course that will attract students and generate revenue. Get access to our exclusive resources and learn from our experienced instructors. With Course Creator Pro, you’ll have all the tools you need to become a successful online course creator.</p> <a href=\#\>Learn More Today</a> </div></body> </html>\n\n\nNew Email\n{last_line}\n\n\nNew Code\n""",
-    )
+def openai_complete(prompt, email):
     response = openai.Completion.create(
         model="text-davinci-003",
-        prompt=prompt,
+        prompt=f"{prompt}\n\n{email}",
         max_tokens=1200,
         temperature=0.7,
         top_p=1,
@@ -90,54 +49,28 @@ def openai_complete(prompt, last_line):
     return response["choices"][0]["text"]
 
 
-import os
-
-print(os.getcwd())
-last_line = get_last_line_of_file(
-    "/Users/bottega/Desktop/mairket/mairkeeteer/files/data/examples/html_css_code_example.jsonl"
-)
-print(last_line)
-# convert the last line to a dictionary
-last_line = str(last_line)
-
-string_of_code = json.loads(last_line)
-print(string_of_code["Code"])
-
-
-def get_key_from_last_line_of_file(last_line, key):
-    last_line = json.loads(last_line)
-    return last_line[key]
-
-
-print(get_key_from_last_line_of_file(last_line, "Code"))
-if __name__ == "__main__":
+def main():
     prompt = """
     Example HTML and CSS for a course that teaches you how to create courses. The HTML progressively gets more complex & the CSS progressively gets more stylish.
     """
 
-    # get the last line of the file
-    last_line = get_last_line_of_file(FILE_PATH)
+    last_line = get_last_line_of_file(HTML_CSS_CODE_EXAMPLES_FILE)
+    print(last_line) # print the last line to check its content
+    email = json.loads(last_line)["Email"]
+    code = openai_complete(prompt, email)
 
-    # get the value of the 'Email' key of the last line
-    last_line_email = get_key_from_last_line_of_file(last_line, "Email")
-
-    code = openai_complete(prompt, last_line_email)
-
-    # append ['Code'] to the last line of the file as a new key Code
     last_line = json.loads(last_line)
     last_line["Code"] = code
-    print(last_line, "LASTLINE")
-    last_line = json.dumps(last_line)
-    new_file_path = (
-        "/Users/bottega/Desktop/mairket/mairkeeteer/files/data/examples/html_css_code_example_new.jsonl",
-    )
-    last_line = json.dumps({"Code": last_line})
-    print(last_line, "YO")
-    with open(new_file_path, "w") as f:
-        f.write(last_line)
+
+    with open(HTML_CSS_CODE_EXAMPLES_FILE, "a") as f:
+        f.write(json.dumps(last_line) + "\n")
+
+    html_css_file = HTMLTemplateFile(HTML_CSS_CODE_EXAMPLES_FILE)
+    html_css_file.render_html_in_browser(str(html_css_file.get_code_examples()[-1]))
+    print("rendered")
 
 
-def get_last_line_of_file(file_path):
-    with open(file_path, "r") as f:
-        last_line = f.readlines()[-1]
-    return last_line
+
+if __name__ == "__main__":
+    main()
+

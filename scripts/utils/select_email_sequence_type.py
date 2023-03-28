@@ -21,7 +21,8 @@ def get_email_sequence_types():
     """
     Reads the email sequence types from the file.
     """
-    config_file_path = "/workspaces/mairkeeteer/config.ini"
+    # config_file_path = "/workspaces/mairkeeteer/config.ini"
+    config_file_path = "/Users/canyons/mairkeeteer/config.ini"
     email_sequence_types_file_path = parse_config_file(config_file_path)["PATHS"][
         "EMAIL_SEQUENCE_TYPES_FILE_PATH"
     ]

@@ -1,27 +1,2 @@
-{"step": "Don't forget about your items in your cart!", "step_number": 1}
-{"step": "", "step_number": 2}
-{"step": "Hey [name],", "step_number": 3}
-{"step": "We noticed that you left some items in your cart. we wanted to remind you that they're still there, waiting for you to complete your purchase.", "step_number": 4}
-{"step": "We know you're busy, so we wanted to make sure you didn't forget about them. plus, we have some great deals and discounts that you can take advantage of right now.", "step_number": 5}
-{"step": "Don't miss out on these great offers - click the link below to finish your purchase and get your items today!", "step_number": 6}
-{"step": "[link to shopping cart]", "step_number": 7}
-{"step": "Thanks,", "step_number": 8}
-{"step": "The stockton walbeck team", "step_number": 9}
-{"step": "", "step_number": 10}
-{"step": "Last chance - complete your purchase now!", "step_number": 11}
-{"step": "", "step_number": 12}
-{"step": "Hey [name],", "step_number": 13}
-{"step": "We noticed that you still haven't completed your purchase. we wanted to remind you that the items in your cart are still waiting for you!", "step_number": 14}
-{"step": "Plus, we have some great deals and discounts that you can take advantage of right now. don't miss out on these great offers - click the link below to finish your purchase and get your items today!", "step_number": 15}
-{"step": "[link to shopping cart]", "step_number": 16}
-{"step": "Thanks,", "step_number": 17}
-{"step": "The stockton walbeck team", "step_number": 18}
-{"step": "", "step_number": 19}
-{"step": "Don't miss out - complete your purchase now!", "step_number": 20}
-{"step": "", "step_number": 21}
-{"step": "Hey [name],", "step_number": 22}
-{"step": "This is your last chance to complete your purchase and get the items in your cart. we know you're busy, so we wanted to make sure you didn't miss out on these great offers.", "step_number": 23}
-{"step": "Plus, we have some great deals and discounts that you can take advantage of right now. don't miss out on these great offers - click the link below to finish your purchase and get your items today!", "step_number": 24}
-{"step": "[link to shopping cart]", "step_number": 25}
-{"step": "Thanks,", "step_number": 26}
-{"step": "The stockton walbeck team", "step_number": 27}
+{"step": [], "hook": [], "value_proposition": [], "call_to_action": []}
+[]"""

@@ -13,10 +13,14 @@ def create_config():
     }
 
     config["PATHS"] = {
-        "BACKGROUND_INFORMATION_FILE_PATH": "/workspaces/mairkeeteer/files/data/data/background_information.jsonl",
-        "TEMPORARY_FILE_PATH": "/workspaces/mairkeeteer/files/data/temp/temp.jsonl",
-        "HOOKS_EXAMPLES_FILE_PATH": "/workspaces/mairkeeteer/files/data/examples/hook_examples.jsonl",
-        "EMAIL_SEQUENCE_TYPES_FILE_PATH": "/workspaces/mairkeeteer/files/data/examples/email_sequence_types.jsonl",
+        # "BACKGROUND_INFORMATION_FILE_PATH": "/workspaces/mairkeeteer/files/data/data/background_information.jsonl",
+        "BACKGROUND_INFORMATION_FILE_PATH": "/Users/canyons/mairkeeteer/files/data/data/background_information.jsonl",
+        # "TEMPORARY_FILE_PATH": "/workspaces/mairkeeteer/files/data/temp/temp.jsonl",
+        "TEMPORARY_FILE_PATH": "/Users/canyons/mairkeeteer/files/data/temp/temp.jsonl",
+        # "HOOKS_EXAMPLES_FILE_PATH": "/workspaces/mairkeeteer/files/data/examples/hook_examples.jsonl",
+        "HOOKS_EXAMPLES_FILE_PATH": "/Users/canyons/mairkeeteer/files/data/examples/hook_examples.jsonl",
+        # "EMAIL_SEQUENCE_TYPES_FILE_PATH": "/workspaces/mairkeeteer/files/data/examples/email_sequence_types.jsonl",
+        "EMAIL_SEQUENCE_TYPES_FILE_PATH": "/Users/canyons/mairkeeteer/files/data/examples/email_sequence_types.jsonl",
     }
 
     with open(CONFIG_FILE_NAME, "w") as configfile:

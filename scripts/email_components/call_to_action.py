@@ -1,6 +1,7 @@
 import sys
 import logging
 import openai
+import os
 
 sys.path.append("../..")
 from scripts.utils.formatter import StringFormatter
@@ -12,6 +13,7 @@ from scripts.utils.get_values import (
 )
 
 logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 
 class CallToActionCreator:
@@ -60,10 +62,10 @@ class CallToActionCreator:
             return self.formatter.format_everything(response.split("\n"))
         except Exception as e:
             logger.exception(f"An error occurred while generating the call-to-action. Error: {e}")
-            raise
+            return []
 
 
-if __name__ == "__main__":
+def main():
     call_to_action_creator = CallToActionCreator()
     background_info = "\n".join([
         "I sell online courses that teach people how to sell online courses",
@@ -73,8 +75,8 @@ if __name__ == "__main__":
         "People just watched my webinar",
         "I want to send them an email sequence that will get them to buy my course",
     ])
-    steps = get_key_values_from_temp_json_file("step")
-    ctas = []
+    steps = list(range(1, 6))  # Replace this with the correct steps from your JSON file
+    cta_list = []
     for step in steps:
         logger.info(f"Generating call-to-action for step {step} of {len(steps)}")
         call_to_actions = call_to_action_creator.create_call_to_action(
@@ -82,8 +84,12 @@ if __name__ == "__main__":
         )
         for call_to_action in call_to_actions:
             logger.info(f"Generated call-to-action: {call_to_action}")
-            ctas.append(call_to_action)
+            cta_list.append(call_to_action)
             print(call_to_action)
-    logger.info(f"Generated call-to-actions: {ctas}")
+    logger.info(f"Generated call-to-actions: {cta_list}")
     temp_json_file = get_temporary_file_path()
-    append_key_value_to_json_file("call_to_action", ctas, temp_json_file)
+    append_key_value_to_json_file("call_to_action", cta_list, temp_json_file, len(steps))
+
+
+if __name__ == "__main__":
+    main()

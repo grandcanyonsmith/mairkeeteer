@@ -6,7 +6,7 @@ import json
 import openai
 from configparser import ConfigParser
 
-config_file_path = "/workspaces/mairkeeteer/config.ini"
+config_file_path = "/Users/canyons/mairkeeteer/config.ini"
 
 
 def parse_config_file(config_file):
@@ -133,26 +133,39 @@ def read_lines_from_file(file_path):
     """
     with open(file_path, "r") as f:
         return f.readlines()
+    
+def read_json_file_safely(file_path, default_value):
+    try:
+        with open(file_path, "r") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return default_value
 
+def create_empty_steps_structure(num_steps):
+    return {"steps": [{"step": i} for i in range(1, num_steps + 1)]}
 
-def append_key_value_to_json_file(key, values, temp_json_file):
+def append_key_value_to_json_file(key, values, temp_json_file, num_steps):
     """
     Append the key value to the json file
     :param key: the key
     :param values: the values
-    :param json_file: the json file
+    :param temp_json_file: the json file
+    :param num_steps: the number of steps to create if the file is empty
     :return: None
     """
 
-    with open(temp_json_file, "r") as f:
-        steps = [json.loads(line) for line in f]
+    data = read_json_file_safely(temp_json_file, create_empty_steps_structure(num_steps))
+
+    steps = data.get("steps", [])
 
     for i, step in enumerate(steps):
-        step[key] = values[i]
+        if i < len(values):
+            step[key] = values[i]
+        else:
+            step[key] = "No CTA generated for this step"
 
     with open(temp_json_file, "w") as f:
-        for step in steps:
-            f.write(json.dumps(step) + "\n")
+        json.dump(data, f, indent=2)
 
 
 def _add_steps_to_temp_json_file(steps, temp_json_file):

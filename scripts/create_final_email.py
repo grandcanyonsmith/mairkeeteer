@@ -1,37 +1,31 @@
 import json
-import sys
 
 import openai
 
-
-# from scripts.utils.formatter import StringFormatter
 from utils.formatter import StringFormatter
 from utils.get_values import (
     _openai_response,
     append_key_value_to_json_file,
     get_key_values_from_temp_json_file,
 )
-from utils.openai_secret_manager import (
-    OpenAiSecretManager as openai_secret_manager,
-)
 
-temp_json_file = (
-    "/Users/canyons/Documents/GitHub/mairkeeteer/files/data/temp/temp.jsonl"
-)
+TEMP_JSON_FILE = "/Users/canyons/mairkeeteer/files/data/temp/temp.jsonl"
+KEYS = ["step", "hook", "value_proposition", "call_to_action"]
 
 
-# This class is used to create the final email
 class FinalEmailCreator:
     def __init__(self):
         self.formatter = StringFormatter()
 
     def create_final_email(self, step, hook, value_proposition, call_to_action):
-        prompt = f'''Step in email sequence\n"""\n{step}\n"""\n\nHook:\n"""\n{hook}\n"""\n\nValue Proposition:\n"""\n{value_proposition}\n"""\n\nFinal Email\n"""\n'''
+        prompt = f'Step in email sequence\n"""{step}"""\n\nHook:\n"""{hook}"""\n\nValue Proposition:\n"""{value_proposition}"""\n\nFinal Email\n"""'
+        data = {"step": step, "hook": hook, "value_proposition": value_proposition, "call_to_action": call_to_action}
+        with open(TEMP_JSON_FILE, "a") as f:
+            f.write(json.dumps(data) + "\n")
         return _openai_response(prompt)
 
-    def create_final_email_from_temp_json_file(self, temp_json_file):
-        keys = ["step", "hook", "value_proposition", "call_to_action"]
-        for key in keys:
+    def create_final_email_from_temp_json_file(self, TEMP_JSON_FILE):
+        for key in KEYS:
             print(f"Getting {key} from temp json file")
             value = get_key_values_from_temp_json_file(key)
             if value is None:
@@ -47,13 +41,7 @@ class FinalEmailCreator:
         print(f"Please enter the {key} for this email")
         return input()
 
-    # convert to json
-    def convert_to_json(self, final_email):
-        print(final_email)
-        return json.dumps({"Email": final_email})
-
-    # add a new key value pair to the json file
-    def append_to_file(self, final_email, temp_json_file):
+    def append_email_to_file(self, final_email, temp_json_file):
         with open(temp_json_file, "a") as f:
             f.write(final_email)
             f.write("\n")
@@ -62,11 +50,7 @@ class FinalEmailCreator:
 if __name__ == "__main__":
     final_email_creator = FinalEmailCreator()
     final_email = final_email_creator.create_final_email_from_temp_json_file(
-        temp_json_file
+        TEMP_JSON_FILE
     )
     print(final_email)
-    # convert to json
-
-    # write to file
-    final_email = final_email_creator.convert_to_json(final_email)
-    final_email = final_email_creator.append_to_file(final_email, temp_json_file)
+    final_email = final_email_creator.append_email_to_file(final_email, TEMP_JSON_FILE)

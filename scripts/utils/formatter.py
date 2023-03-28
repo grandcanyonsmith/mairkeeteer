@@ -37,6 +37,9 @@ class StringFormatter:
     def remove_empty_strings(self, list_of_strings: list) -> list:
         """
         Removes any empty strings from the given list of strings.
+
+        :param list_of_strings: A list of strings.
+        :return: A list of strings with any empty strings removed.
         """
         return [string for string in list_of_strings if string]
 
